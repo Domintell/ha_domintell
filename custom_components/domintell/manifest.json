@@ -2,15 +2,15 @@
   "domain": "domintell",
   "name": "Domintell",
   "codeowners": ["@Domintell, @domintellpublic", "@sgonnella"],
-  "version": "0.4.8",
   "config_flow": true,
-  "documentation": "https://github.com/Domintell/hacs_domintell#domintell-integration-for-home-assistant",
   "dependencies": [],
+  "documentation": "https://github.com/Domintell/hacs_domintell#domintell-integration-for-home-assistant",
   "integration_type": "hub",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/Domintell/hacs_domintell/issues",
+  "loggers": ["domintell_bridge"],
   "quality_scale": "no_score",
   "requirements": ["websockets==15.0.1"],
-  "loggers": ["domintell_bridge"],
+  "version": "0.4.8",
   "zeroconf": ["_domintellmodule._tcp.local."]
 }
