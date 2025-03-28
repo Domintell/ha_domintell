@@ -9,7 +9,7 @@
   "integration_type": "hub",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/Domintell/hacs_domintell/issues",
-  "quality_scale": "no score",
+  "quality_scale": "no_score",
   "requirements": ["websockets==15.0.1"],
   "loggers": ["domintell_bridge"],
   "zeroconf": ["_domintellmodule._tcp.local."]
