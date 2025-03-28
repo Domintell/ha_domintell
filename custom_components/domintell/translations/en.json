@@ -31,6 +31,9 @@
       "reconfigure": {
         "title": "Reconfigure device",
         "description": "Update configuration for {serial}.",
+        "data": {
+          "host": "host"
+        },
         "data_description": {
           "host": "The hostname or IP address of your Domintell bridge"
         }

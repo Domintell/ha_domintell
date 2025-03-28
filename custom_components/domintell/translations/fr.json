@@ -31,6 +31,9 @@
       "reconfigure": {
         "title": "Reconfigurer l'appareil",
         "description": "Mettre à jour la configuration pour {serial}.",
+        "data": {
+          "host": "host"
+        },
         "data_description": {
           "host": "Le nom d'hôte ou l'adresse IP de votre pont Domintell"
         }
