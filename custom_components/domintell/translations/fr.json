@@ -1,0 +1,181 @@
+{
+  "title": "Domintell Bridge",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurer l'appareil",
+        "description": "Entrez les informations demandées pour intégrer votre installation Domintell à Home Assistant.",
+        "data": {
+          "host": "host",
+          "module_type": "Type de module",
+          "module_serial_number": "Numéro de série"
+        },
+        "data_description": {
+          "host": "Le nom d'hôte ou l'adresse IP de votre pont Domintell",
+          "module_type": "Le type de module",
+          "module_serial_number": "Le numéro de série du module"
+        }
+      },
+      "select_module": {
+        "title": "Configurer l'appareil",
+        "description": "Nous ne sommes pas en mesure de récupérer le numéro de série de votre pont. Entrez les informations demandées pour terminer l'intégration.",
+        "data": {
+          "module_type": "Type de module",
+          "module_serial_number": "Numéro de série"
+        },
+        "data_description": {
+          "module_type": "Le type de module",
+          "module_serial_number": "Le numéro de série du module"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigurer l'appareil",
+        "description": "Mettre à jour la configuration pour {serial}.",
+        "data_description": {
+          "host": "Le nom d'hôte ou l'adresse IP de votre pont Domintell"
+        }
+      },
+      "discovery_confirm": {
+        "title": "Confirmer",
+        "description": "Voulez-vous configurer le pont ({serial}) sur {host} ?"
+      },
+      "reauth_confirm": {
+        "title": "Réauthentification",
+        "description": "L'intégration Domintell doit ré-authentifier votre compte."
+      }
+    },
+    "error": {
+      "invalid_appinfo": "Le format de l'APPINFO est invalid",
+      "cannot_connect": "Échec de la connexion",
+      "invalid_auth": "Authentification invalide",
+      "invalid_host": "Nom d'hôte ou adresse IP non valide",
+      "invalid_credentials": "Le nom d'utilisateur et/ou le mot de passe sont invalides",
+      "max_connection": "Le nombre maximal de clients connectés au pont Domintell est atteint",
+      "connection_refused": "L'appareil a refuser la connexion. Assurez-vous que vous avez entré la bonne adresse IP ou nom d'hôte. Si votre installation est munie d'un module DNET, entrez les informations de celui-ci.",
+      "network_error": "Appareil inaccessible, assurez-vous que vous avez entré la bonne adresse IP ou nom d'hôte et que l'appareil est disponible sur votre réseau.",
+      "unknown_error": "Erreur inattendue",
+      "unknown": "Erreur inattendue"
+    },
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré",
+      "already_configured_device": "L'appareil est déjà configuré",
+      "already_in_progress": "Le flux de configuration est déjà en cours",
+      "no_devices_found": "Aucun appareil trouvé sur le réseau",
+      "reauth_successful": "Ré-authentification réussie",
+      "reconfigure_successful": "Reconfiguration réussie",
+      "no_bridges": "Aucun pont Domintell n'a été découvert",
+      "invalid_appinfo": "Le format de l'APPINFO est invalid",
+      "wrong_device": "Le périphérique configuré n'est pas le même que celui trouvé sur cet hôte",
+      "device_not_supported": "Cet appareil n'est pas pris en charge",
+      "not_domintell_module": "Ce n'est pas un module Domintell",
+      "not_domintell_master": "Ce n'est pas un module Master Domintell",
+      "not_domintell_bridge": "Ce n'est pas un pont Domintell, l'appareil détecté ne correspond pas",
+      "invalid_credentials": "Le nom d'utilisateur et/ou le mot de passe sont invalides",
+      "max_connection": "Le nombre maximal de clients connectés au pont Domintell est atteint",
+      "connection_refused": "L'appareil a refuser la connexion. Assurez-vous que vous avez entré la bonne adresse IP ou nom d'hôte. Si votre installation est munie d'un Master et d'un DNET, connectez vous sur le DNET.",
+      "network_error": "Appareil inaccessible, assurez-vous que vous avez entré la bonne adresse IP ou nom d'hôte et que l'appareil est disponible sur votre réseau.",
+      "unknown_error": "Erreur inattendue",
+      "unknown": "Erreur inattendue"
+    }
+  },
+  "entity": {
+    "switch": {
+      "presence_simulation": {
+        "name": "Simulation de présence"
+      }
+    },
+    "sensor": {
+      "value": {
+        "name": "Valeur"
+      },
+      "temperature": {
+        "name": "Température"
+      },
+      "illuminance": {
+        "name": "Éclairement"
+      },
+      "humidity": {
+        "name": "Humidité"
+      },
+      "pressure": {
+        "name": "Pression"
+      },
+      "carbon_dioxide": {
+        "name": "Concentration"
+      },
+      "voltage": {
+        "name": "Tension"
+      },
+      "percentage": {
+        "name": "Pourcentage"
+      },
+      "wind_speed": {
+        "name": "Vitesse du vent"
+      },
+      "wind_direction": {
+        "name": "Direction du vent"
+      },
+      "power_supply_load": {
+        "name": "Charge de l'alimentation"
+      },
+      "power_supply_voltage": {
+        "name": "Tension de sortie"
+      },
+      "power_supply_temperature": {
+        "name": "Température interne"
+      },
+      "frequency": {
+        "name": "Fréquence"
+      },
+      "power_factor": {
+        "name": "Facteur de puissance"
+      },
+      "power_factor_phase": {
+        "name": "Facteur de puissance phase {phase}"
+      },
+      "voltage_phase": {
+        "name": "Tension phase {phase}"
+      },
+      "intensity_phase": {
+        "name": "courant phase {phase}"
+      },
+      "instant_power_phase": {
+        "name": "Puissance phase {phase}"
+      },
+      "consumed_power": {
+        "name": "Puissance consommée"
+      },
+      "produced_power": {
+        "name": "Puissance produite"
+      },
+      "total_power": {
+        "name": "Puissance totale"
+      },
+      "total_energy_phase": {
+        "name": "Énergie totale phase {phase}"
+      },
+      "forward_energy": {
+        "name": "Énergie totale importée"
+      },
+      "reverse_energy": {
+        "name": "Énergie totale exportée"
+      },
+      "total_energy": {
+        "name": "Énergie totale"
+      },
+      "total_energy_for_tariff": {
+        "name": "Énergie totale tarif {tariff}"
+      },
+      "tariff_indicator": {
+        "name": "Tariff"
+      },
+      "night_and_day": {
+        "name": "Nuit/Jour",
+        "state": {
+          "night": "Nuit",
+          "day": "Jour"
+        }
+      }
+    }
+  }
+}

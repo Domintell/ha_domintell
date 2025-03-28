@@ -1,0 +1,181 @@
+{
+  "title": "Domintell Bridge",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure device",
+        "description": "Enter the requested information to integrate your Domintell installation with Home Assistant.",
+        "data": {
+          "host": "host",
+          "module_type": "Module type",
+          "module_serial_number": "Serial number"
+        },
+        "data_description": {
+          "host": "The hostname or IP address of your Domintell bridge",
+          "module_type": "The module type",
+          "module_serial_number": "The serial number of module"
+        }
+      },
+      "select_module": {
+        "title": "Configure device",
+        "description": "We are unable to retrieve your bridge serial number. Enter the requested information to complete the integration.",
+        "data": {
+          "module_type": "Module type",
+          "module_serial_number": "Serial number"
+        },
+        "data_description": {
+          "module_type": "The module type",
+          "module_serial_number": "The serial number of module"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure device",
+        "description": "Update configuration for {serial}.",
+        "data_description": {
+          "host": "The hostname or IP address of your Domintell bridge"
+        }
+      },
+      "discovery_confirm": {
+        "title": "Confirm",
+        "description": "Do you want to set up the bridge ({serial}) at {host}?"
+      },
+      "reauth_confirm": {
+        "title": "Reauth",
+        "description": "The Domintell integration needs to re-authenticate your account."
+      }
+    },
+    "error": {
+      "invalid_appinfo": "The APPINFO format is invalid",
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid authentication",
+      "invalid_host": "Invalid hostname or IP address",
+      "invalid_credentials": "The username and/or password are invalid",
+      "max_connection": "The maximum number of clients connected to the Domintell bridge has been reached",
+      "connection_refused": "The device refused the connection. Make sure you entered the correct IP address or hostname. If your installation has a DNET module, enter the information of this one.",
+      "network_error": "Device unreachable, make sure you have entered the correct IP address or hostname and that the device is available on your network.",
+      "unknown_error": "Unexpected error",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured",
+      "already_configured_device": "Device is already configured",
+      "already_in_progress": "Configuration flow is already in progress",
+      "no_devices_found": "No devices found on the network",
+      "reauth_successful": "Re-authentication was successful",
+      "reconfigure_successful": "Re-configuration was successful",
+      "no_bridges": "No Domintell bridge has been discovered.",
+      "invalid_appinfo": "The APPINFO format is invalid",
+      "wrong_device": "The configured device is not the same found on this host",
+      "device_not_supported": "This device is not supported",
+      "not_domintell_module": "Not a Domintell module",
+      "not_domintell_master": "Not a Domintell master",
+      "not_domintell_bridge": "Not a Domintell bridge, discovered device did not match",
+      "invalid_credentials": "The username and/or password are invalid",
+      "max_connection": "The maximum number of clients connected to the Domintell bridge has been reached",
+      "connection_refused": "The device refused the connection. Make sure you entered the correct IP address or hostname. If your installation has a Master and a DNET, connect to the DNET.",
+      "network_error": "Device unreachable, make sure you have entered the correct IP address or hostname and that the device is available on your network.",
+      "unknown_error": "Unexpected error",
+      "unknown": "Unexpected error"
+    }
+  },
+  "entity": {
+    "switch": {
+      "presence_simulation": {
+        "name": "Presence simulation"
+      }
+    },
+    "sensor": {
+      "value": {
+        "name": "Value"
+      },
+      "temperature": {
+        "name": "Temperature"
+      },
+      "illuminance": {
+        "name": "Illuminance"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "pressure": {
+        "name": "Pressure"
+      },
+      "carbon_dioxide": {
+        "name": "Concentration"
+      },
+      "voltage": {
+        "name": "Voltage"
+      },
+      "percentage": {
+        "name": "Percentage"
+      },
+      "wind_speed": {
+        "name": "Wind speed"
+      },
+      "wind_direction": {
+        "name": "Wind direction"
+      },
+      "power_supply_load": {
+        "name": "Power supply load"
+      },
+      "power_supply_voltage": {
+        "name": "Output voltage"
+      },
+      "power_supply_temperature": {
+        "name": "Internal temperature"
+      },
+      "frequency": {
+        "name": "Frequency"
+      },
+      "power_factor": {
+        "name": "Power factor"
+      },
+      "power_factor_phase": {
+        "name": "Power factor phase {phase}"
+      },
+      "voltage_phase": {
+        "name": "Voltage phase {phase}"
+      },
+      "intensity_phase": {
+        "name": "Current phase {phase}"
+      },
+      "instant_power_phase": {
+        "name": "Power phase {phase}"
+      },
+      "consumed_power": {
+        "name": "Consumed power"
+      },
+      "produced_power": {
+        "name": "Produced power"
+      },
+      "total_power": {
+        "name": "Total power"
+      },
+      "total_energy_phase": {
+        "name": "Total energy phase {phase}"
+      },
+      "forward_energy": {
+        "name": "Total imported energy"
+      },
+      "reverse_energy": {
+        "name": "Total energy exported"
+      },
+      "total_energy": {
+        "name": "Total energy"
+      },
+      "total_energy_for_tariff": {
+        "name": "Total energy tariff {tariff}"
+      },
+      "tariff_indicator": {
+        "name": "Tariff"
+      },
+      "night_and_day": {
+        "name": "Night/Day",
+        "state": {
+          "night": "Night",
+          "day": "Day"
+        }
+      }
+    }
+  }
+}

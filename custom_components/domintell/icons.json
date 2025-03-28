@@ -1,0 +1,28 @@
+{
+  "entity": {
+    "switch": {
+      "presence_simulation": {
+        "default": "mdi:shield-home-outline",
+        "state": {
+          "off": "mdi:shield-home-outline",
+          "on": "mdi:shield-home"
+        }
+      }
+    },
+    "sensor": {
+      "wind_direction": {
+        "default": "mdi:windsock"
+      },
+      "power_supply_load": {
+        "default": "mdi:speedometer"
+      },
+      "night_and_day": {
+        "default": "mdi:theme-light-dark",
+        "state": {
+          "night": "mdi:weather-night",
+          "day": "mdi:weather-sunny"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+"""Creates Domintell scene entities."""
+
+from __future__ import annotations
+
+
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers import entity_registry as er
+from homeassistant.components.scene import DOMAIN as SCENE_DOMAIN, Scene as SceneEntity
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+
+from .domintell_api import DomintellGateway
+from .domintell_api.controllers import ScenesController
+from .domintell_api.controllers.events import EventType
+from .bridge import DomintellBridge
+from .const import DOMAIN
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up scene from Config Entry."""
+    bridge: DomintellBridge = hass.data[DOMAIN][config_entry.entry_id]
+    api: DomintellGateway = bridge.api
+    controller = api.scenes
+
+    @callback
+    def async_add_entity(event_type: EventType, resource) -> None:
+        """Add entity from Domintell resource."""
+        # pylint: disable=unused-argument
+        async_add_entities([DomintellScene(bridge, controller, resource)])
+
+    # Add all current items in controller
+    for item in controller:
+        async_add_entity(EventType.RESOURCE_ADDED, item)
+
+    # Register listener for new items only
+    config_entry.async_on_unload(
+        controller.subscribe(async_add_entity, event_filter=EventType.RESOURCE_ADDED)
+    )
+
+    # Check for entities that no longer exist and remove them
+    entity_reg = er.async_get(hass)
+    reg_entities = er.async_entries_for_config_entry(entity_reg, config_entry.entry_id)
+
+    for entity in reg_entities:
+        if entity.domain != SCENE_DOMAIN:
+            continue
+
+        part = entity.unique_id.split("_")
+        if len(part) >= 3:
+            endpoint_id = part[2]
+
+            if endpoint_id not in controller.keys():
+                entity_reg.async_remove(entity.entity_id)
+
+
+class DomintellScene(SceneEntity):
+    """Representation of a Domintell Scene."""
+
+    def __init__(self, bridge: DomintellBridge, controller: ScenesController, resource):
+        """Initialize a Domintell scene."""
+        self._bridge = bridge
+        self._api = bridge.api
+        self._controller = controller
+        self._resource = resource
+        self._logger = bridge.logger
+
+        self._name = self._resource.io_name
+        self._attr_has_entity_name = True
+        self._attr_should_poll = False
+        self._attr_assumed_state = True  # the state is based on our assumption
+
+        module = self._api.modules.get_module_of_io(self._resource.id)
+        device_id = f"{self._bridge.config_entry.unique_id}_{module.id}"
+        self._attr_unique_id = f"{device_id}_{resource.id}"
+
+        # Scenes are attached to the bridge
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, device_id)},
+        )
+
+    @property
+    def name(self) -> str:
+        """Return the display name of this scene."""
+        return self._name
+
+    async def async_activate(self, **kwargs) -> None:
+        """Activate Domintell scene."""
+        # pylint: disable=unused-argument
+
+        await self._resource.activate()
+
+    @callback
+    def _handle_event(self, event_type: EventType, resource) -> None:
+        """Handle status event for this resource."""
+        # pylint: disable=unused-argument
+
+        if event_type == EventType.RESOURCE_DELETED:
+            entity_reg = er.async_get(self.hass)
+            entity_reg.async_remove(self.entity_id)
+            return
+
+        if event_type == EventType.RESOURCE_UPDATED:
+            self.async_write_ha_state()
+
+    async def async_added_to_hass(self) -> None:
+        """Call when entity is added."""
+
+        # Add value_changed callbacks.
+        self.async_on_remove(
+            self._controller.subscribe(
+                self._handle_event,
+                self._resource.id,
+                (EventType.RESOURCE_UPDATED, EventType.RESOURCE_DELETED),
+            )
+        )

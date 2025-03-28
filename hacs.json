@@ -1,0 +1,9 @@
+{
+  "name": "Domintell Integration",
+  "content_in_root": false,
+  "zip_release": true,
+  "filename": "domintell.zip",
+  "render_readme": true,
+  "hide_default_branch": true,
+  "homeassistant": "2025.3.0"
+}
