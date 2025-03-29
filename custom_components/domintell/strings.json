@@ -31,7 +31,7 @@
       "reconfigure": {
         "title": "Reconfigure device",
         "data": {
-          "host": "host"
+          "host": "[%key:common::config_flow::data::host%]"
         },
         "description": "Update configuration for {serial}.",
         "data_description": {
