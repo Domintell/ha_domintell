@@ -44,7 +44,7 @@ You have to enable the local API to allow Home Assistant to communicate with you
 
 To add the Domintell integration to your Home Assistant instance, use this My button:
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=%40Domintell&repository=https%3A%2F%2Fgithub.com%2FDomintell%2Fha_domintell&category=Integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Domintell&repository=Fha_domintell&category=Integration)
 
 Domintell bridges can be auto-discovered by Home Assistant. If an instance was found, it will be shown as Discovered. You can then set it up right away.
 
