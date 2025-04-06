@@ -349,8 +349,8 @@ class TemperatureController(BaseController):
                     my_io.state.cooling_profile_setpoint = data[4]
                 elif len(data) == 7:
                     # NewGen status
-                    data[2] = TemperatureMode[data[2]].value
-                    data[5] = RegulationMode[data[5]].value
+                    data[2] = TemperatureMode[data[2]]
+                    data[5] = RegulationMode[data[5]]
                     my_io.state = ThermostatState(*data)
                 else:
                     self._logger.warning(
