@@ -328,30 +328,38 @@ class TemperatureController(BaseController):
                     # Legacy status with data type = 'T'
                     my_io.state.current_temperature = data[1]
                     my_io.state.active_heating_setpoint = data[2]
-                    temperature_mode_values = {
-                        mode.name: mode for mode in TemperatureMode
-                    }
-                    my_io.state.temperature_mode = temperature_mode_values.get(
-                        data[3], TemperatureMode.AUTO
-                    )
                     my_io.state.heating_profile_setpoint = data[4]
+
+                    try:
+                        my_io.state.temperature_mode = TemperatureMode[data[3]]
+                    except Exception:
+                        self._logger.warning(
+                            f"Status for Thermostat IO has an incorrect format: temperature_mode={data[3]}"
+                        )
 
                 elif len(data) == 5 and data[0] == "U":
                     # Legacy status with data type = 'U'
                     my_io.state.current_temperature = data[1]
                     my_io.state.active_cooling_setpoint = data[2]
-                    regulation_mode_values = {
-                        mode.name: mode for mode in RegulationMode
-                    }
-                    my_io.state.regulation_mode = regulation_mode_values.get(
-                        data[3], RegulationMode.AUTO
-                    )
                     my_io.state.cooling_profile_setpoint = data[4]
+
+                    try:
+                        my_io.state.regulation_mode = RegulationMode[data[3]]
+                    except Exception:
+                        self._logger.warning(
+                            f"Status for Thermostat IO has an incorrect format: regulation_mode={data[3]}"
+                        )
+
                 elif len(data) == 7:
                     # NewGen status
-                    data[2] = TemperatureMode[data[2]]
-                    data[5] = RegulationMode[data[5]]
-                    my_io.state = ThermostatState(*data)
+                    try:
+                        data[2] = TemperatureMode[data[2]]
+                        data[5] = RegulationMode[data[5]]
+                        my_io.state = ThermostatState(*data)
+                    except Exception:
+                        self._logger.warning(
+                            f"Status for Thermostat IO has an incorrect format: data={data}"
+                        )
                 else:
                     self._logger.warning(
                         f"Status for Thermostat IO has an incorrect format: data={data}"
