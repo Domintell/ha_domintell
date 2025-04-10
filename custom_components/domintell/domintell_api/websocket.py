@@ -491,7 +491,9 @@ class DomintellClient:
                                     lp_status_list.append(new_status)
 
                         except Exception as ex:
-                            self._logger.error(f"Error parsing status message: {ex}")
+                            self._logger.error(
+                                f"Error parsing status message: '{line}' - {ex}"
+                            )
 
                     if len(lp_status_list) > 0:
                         self._on_status(lp_status_list)
