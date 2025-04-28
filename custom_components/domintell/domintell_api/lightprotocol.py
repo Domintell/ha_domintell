@@ -584,6 +584,12 @@ class LpStatus:
             elif self._module_type == "SYS":
                 self._io_type = 17  # TypeVarSys
             elif self._module_type in (
+                "BR2",
+                "BR4",
+                "BR6",
+            ):
+                self._io_type = 60  # TypeLedRgbIo
+            elif self._module_type in (
                 "LED",
                 "BU1",
                 "BU2",
