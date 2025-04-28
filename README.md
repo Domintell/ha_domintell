@@ -125,7 +125,7 @@ This integration supports the following Domintell modules:
   - DMOV06
   - DMOV07
   - DWIND01
-  - DFAN01
+  - DFAN01 (Read Only)
   - DPBRTHERMO01
   - DELEC01
 - **Screens:**
