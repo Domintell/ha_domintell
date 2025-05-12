@@ -198,7 +198,7 @@ class EventsController:
 
             # Split data in atomic event
             if (
-                status.io_type not in [8, 12, 16, 17, 24, 25, 29, 41, 46, 51, 60]
+                status.io_type not in [8, 12, 16, 17, 24, 29, 41, 51]
                 and len(status.data) > 1
             ):
                 # Case of module_type PRL number of io is configurable
