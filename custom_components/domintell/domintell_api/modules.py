@@ -568,7 +568,7 @@ class DPBR06(BaseModule):
     """Representation of Domintell DPBR06 module."""
 
     def __init__(self, id: str, sw_version: str | None = None) -> None:
-        super().__init__("B84", id, sw_version)
+        super().__init__("BR6", id, sw_version)
 
         # The DPBR06 module have the following io
         # 6 InputIO

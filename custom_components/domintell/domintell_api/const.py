@@ -337,7 +337,7 @@ LEGACY_MODULE_TYPE_LIST = (
     "FAN",  # DFAN01
     "DMR",  # DMR01
     "PRL",  # DPBRLCD02
-    "BR2",  # DETH02
+    "BR2",  # DPBR02
     "ET2",  # DRS23202
     "LT2",  # DTSC02
     "DMX",  # DMX01
@@ -921,8 +921,8 @@ MODULE_TYPE_DICTIONNARY: dict[str, dict[str, str | tuple]] = {
         "model": "DPBL01",
         "mod_type_num": "41",
         "io_types_list": ("TypeInputIo", "TypeLed8cIo"),
-        "io_offsets": (1, 2),
-        "io_types": (2, 10),
+        "io_offsets": (1, 1),
+        "io_types": (2, 15),
         "nbr_of_bool_io": 2,
         "description": "1 Push Button Lythos (and 8 colors)",
     },
@@ -931,7 +931,7 @@ MODULE_TYPE_DICTIONNARY: dict[str, dict[str, str | tuple]] = {
         "mod_type_num": "42",
         "io_types_list": ("TypeInputIo", "TypeLed8cIo"),
         "io_offsets": tuple([1, 2] * 2),
-        "io_types": tuple([2] * 2 + [10] * 2),
+        "io_types": tuple([2] * 2 + [15] * 2),
         "nbr_of_bool_io": 2,
         "description": "2 Push Buttons Lythos (and 8 colors)",
     },
@@ -939,8 +939,8 @@ MODULE_TYPE_DICTIONNARY: dict[str, dict[str, str | tuple]] = {
         "model": "DPBL04",
         "mod_type_num": "43",
         "io_types_list": ("TypeInputIo", "TypeLed8cIo"),
-        "io_offsets": tuple([1, 2] * 4),
-        "io_types": tuple([2] * 4 + [10] * 4),
+        "io_offsets": tuple([1, 2, 3, 4] * 2),
+        "io_types": tuple([2] * 4 + [15] * 4),
         "nbr_of_bool_io": 4,
         "description": "4 Push Buttons Lythos (and 8 colors)",
     },
@@ -948,8 +948,8 @@ MODULE_TYPE_DICTIONNARY: dict[str, dict[str, str | tuple]] = {
         "model": "DPBL06",
         "mod_type_num": "44",
         "io_types_list": ("TypeInputIo", "TypeLed8cIo"),
-        "io_offsets": tuple([1, 2] * 6),
-        "io_types": tuple([2] * 6 + [10] * 6),
+        "io_offsets": tuple([1, 2, 3, 4, 5, 6] * 2),
+        "io_types": tuple([2] * 6 + [15] * 6),
         "nbr_of_bool_io": 6,
         "description": "6 Push Buttons Lythos (and 8 colors)",
     },
@@ -957,7 +957,7 @@ MODULE_TYPE_DICTIONNARY: dict[str, dict[str, str | tuple]] = {
         "model": "DPBR06",
         "mod_type_num": "45",
         "io_types_list": ("TypeInputIo", "TypeLedRgbIo"),
-        "io_offsets": tuple([1, 2] * 6),
+        "io_offsets": tuple([1, 2, 3, 4, 5, 6] * 2),
         "io_types": tuple([2] * 6 + [60] * 6),
         "nbr_of_bool_io": 6,
         "description": "Rainbow - Glass button with 6 RGB keys",
