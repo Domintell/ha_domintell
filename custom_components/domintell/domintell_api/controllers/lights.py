@@ -53,14 +53,14 @@ class LightsController(BaseController):
             elif isinstance(my_io.state, int):
                 if (len(data) >= 1) and (isinstance(data[0], int)):
                     my_io.state = event_data["data"][0]
-                elif (len(data) == 1) and (type(data[0]) == list):
+                elif (len(data) == 1) and (isinstance(data[0], list)):
                     my_io.state = event_data["data"][0][0]
                 else:
                     self._logger.warning(
                         f"Status for Light IO has an incorrect format: data={data}"
                     )
             elif isinstance(my_io.state, ColorRGB):
-                if (len(data[0]) >= 3) and (isinstance(data[0], int)):
+                if (len(data[0]) >= 3) and (isinstance(data[0], list)):
                     my_io.state = ColorRGB(data[0])
                 else:
                     self._logger.warning(
