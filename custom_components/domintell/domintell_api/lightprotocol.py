@@ -1257,8 +1257,8 @@ class LpAppInfo:
         io_type = int(io_type_str)
 
         # Fixed a bug in older versions of LP
-        # For DMOV06 appinfo return TypeInputIo instead of TypeMovIo
-        if module_type == "MV6" and io_type == 2:
+        # For DMOV06 and DMOV07 appinfo return TypeInputIo instead of TypeMovIo
+        if module_type in ("MV6", "MV7") and io_type == 2:
             io_type_str = "34"  # TypeMovIo
             io_type = int(io_type_str)
 
