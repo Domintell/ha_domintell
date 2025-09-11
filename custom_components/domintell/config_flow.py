@@ -151,10 +151,16 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(device_unique_id, raise_on_progress=False)
             self._abort_if_unique_id_configured(updates=user_input)
 
-            return self.async_create_entry(
-                title=f"Domintell {self.name}",
-                data=user_input,
-            )
+            if hasattr(self, "reconfigure_entry"):
+                return self.async_update_reload_and_abort(
+                    self.reconfigure_entry,
+                    data_updates=user_input,
+                )
+            else:
+                return self.async_create_entry(
+                    title=f"Domintell {self.name}",
+                    data=user_input,
+                )
 
         return self.async_show_form(
             step_id="select_module",
@@ -299,7 +305,7 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any]
     ) -> ConfigFlowResult:
         """Perform reconfigure upon an user action."""
-        reconfigure_entry = self._get_reconfigure_entry()
+        self.reconfigure_entry = self._get_reconfigure_entry()
         errors = {}
 
         if user_input is not None:
@@ -330,14 +336,16 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_mismatch(reason="wrong_device")
 
                 return self.async_update_reload_and_abort(
-                    reconfigure_entry,
+                    self.reconfigure_entry,
                     data_updates=user_input,
                 )
 
         return self.async_show_form(
             step_id="reconfigure",
-            description_placeholders={"serial": reconfigure_entry.unique_id.upper()},
-            data_schema=default_schema(reconfigure_entry.data),
+            description_placeholders={
+                "serial": self.reconfigure_entry.unique_id.upper()
+            },
+            data_schema=default_schema(self.reconfigure_entry.data),
             errors=errors,
         )
 
