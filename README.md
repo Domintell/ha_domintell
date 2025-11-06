@@ -179,7 +179,7 @@ This integration supports the following Domintell modules:
   - **Example:** If the installation does not have a DNET02 and the push button module is a legacy module, it is not possible to distinguish between a long press and a short press. Only device event "push" is usable.
 - **Thermostat:** For legacy modules, the status update may occur in two steps.
 - **DFAN01:** Changing mode or speed has no effect. This module is driven by a sensor and its temperature profile.
-- **DGQG01:** Compatibility with masters DGQG01 in conjunction with the DNET01 module is not longer guaranteed.
+- **DGQG01:** Compatibility with masters DGQG01 in association with the DNET01 module is not longer guaranteed.
 
 ## Troubleshooting
 
