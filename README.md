@@ -73,7 +73,6 @@ If your Domintell installation is configured with a password, you will need to p
 This integration supports the following Domintell modules:
 
 - **Masters:**
-  - DGQG01 (In association with a DNET01)
   - DGQG02
   - DGQG04
 - **Network interface:**
@@ -148,6 +147,7 @@ This integration supports the following Domintell modules:
 
 - **Devices never supported:**
 
+  - DGQG01
   - DVIP01
   - DVIP02
   - DINTMB01
@@ -179,6 +179,7 @@ This integration supports the following Domintell modules:
   - **Example:** If the installation does not have a DNET02 and the push button module is a legacy module, it is not possible to distinguish between a long press and a short press. Only device event "push" is usable.
 - **Thermostat:** For legacy modules, the status update may occur in two steps.
 - **DFAN01:** Changing mode or speed has no effect. This module is driven by a sensor and its temperature profile.
+- **DGQG01:** Compatibility with masters DGQG01 in conjunction with the DNET01 module is not longer guaranteed.
 
 ## Troubleshooting
 
