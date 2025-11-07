@@ -170,7 +170,7 @@ This integration supports the following Domintell modules:
 - **Airco ModBus modules:** Control of the vanes is not currently supported.
 - **Shutter modules:** The position information showed in Home Assistant is not accurate. Currently, modules do not provide this information. When the shutter is moving, the position is 50%. If the shutter is stopped, after an upward movement, the position will be 90%, after a downward movement the position will be 10%.
 - **Variables:** Variables defined as "Master Only" are not exposed in Home Assistant.
-- **System variables:** Presence simulation is currently only available for installations equipped with a DGQG01 master.
+- **System variables:** Presence simulation is currently not available for NewGen Masters.
 - **Push buttons:** Depending on the configuration of your Domintell system within the GoldenGate software and the overall installation setup, not all press types are available.
   - **Example:** If the installation does not have a DNET02 and the push button module is a legacy module, it is not possible to distinguish between a long press and a short press. Only device event "push" is usable.
 - **Thermostat:** For legacy modules, the status update may occur in two steps.
