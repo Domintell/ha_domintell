@@ -18,10 +18,6 @@ Domintell is a robust and flexible home automation system known for its reliable
 
 You have to enable the local API to allow Home Assistant to communicate with your Domintell installation. Do this in GoldenGate application:
 
-- **DGQG01 + DNET01:**
-  Domintell Pilot (LightProtocol) on WebSocket (17481/tcp) must be enable in the
-  parameter dialog of the DNET01 module.
-
 - **NewGen DGQG without DNET02 (DGQG02/04/...):**
   Domintell Pilot/LightProtocol on WebSocket (17481/tcp) must be enable in the
   parameter dialog of the DGQG02/04/... module.
