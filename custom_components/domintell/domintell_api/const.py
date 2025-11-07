@@ -1,4 +1,5 @@
 UNSUPPORTED_MODULE_TYPE_LIST = (
+    "QG1"  # DGQG01 Gen 1 Master
     "LCD",  # DLCD01
     "LC3",  # DLCD03
     "T35",  # DTSC35
@@ -15,7 +16,6 @@ UNSUPPORTED_MODULE_TYPE_LIST = (
 )
 
 SUPPORTED_MODULE_TYPE_LIST = (
-    "QG1"  # DGQG01 Gen 1 Master (with module DNET01)
     "DIR",  # DDIR01, DDIR02
     "IS8",  # DISM08
     "BU1",  # DPB(U/T)01
