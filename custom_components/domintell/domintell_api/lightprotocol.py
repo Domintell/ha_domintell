@@ -1119,6 +1119,14 @@ class LpAppInfo:
             try:
                 # Determine the io offset
                 io_num = int(io_num_str, 16)
+
+                # For ISM20, the io 16 to 20 are 2 characters long.
+                if module_type == "I20" and io_num == 1:
+                    if len(line) > 11 and line[11] in "01234":
+                        io_num_str = line[10:12]
+                        io_num = self._convert_legacy_ism20_io_num(io_num_str)
+                        io_name: str = line[12 : line.find("[")].strip()
+
                 io_offset = MODULE_TYPE_DICTIONNARY.get(module_type)["io_offsets"][
                     io_num - 1
                 ]
