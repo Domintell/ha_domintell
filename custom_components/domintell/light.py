@@ -245,11 +245,13 @@ class DomintellLight(LightEntity):
                 if self._status_ref_io is not None
                 else self._resource.state
             )
-            self._brightness = (
-                self._status_ref_io.brightness
-                if self._status_ref_io is not None
-                else self._resource.brightness
-            )
+
+            if self._status_ref_io is not None or hasattr(self._resource, "brightness"):
+                self._brightness = (
+                    self._status_ref_io.brightness
+                    if self._status_ref_io is not None
+                    else self._resource.brightness
+                )
             self.async_write_ha_state()
 
     async def async_added_to_hass(self) -> None:
