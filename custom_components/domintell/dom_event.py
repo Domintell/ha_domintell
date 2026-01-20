@@ -39,7 +39,7 @@ async def async_setup_domintell_events(bridge):
         if resource.io_type not in (2, 53):  # "TypeInputIo", "TypeInputTriggerIo"
             return
 
-        if isinstance(resource.state, PushState):
+        if not isinstance(resource.state, PushState):
             return
 
         module = api.modules.get_module_of_io(resource.id)  # ie: "0A0012BF""
@@ -84,7 +84,7 @@ async def async_setup_domintell_events(bridge):
         if resource.io_type != 49:  # TypeGestureIo
             return
 
-        if isinstance(resource.state, GestureState):
+        if not isinstance(resource.state, GestureState):
             return
 
         module = api.modules.get_module_of_io(resource.id)
@@ -135,7 +135,7 @@ async def async_setup_domintell_events(bridge):
         if resource.io_type != 34:  # TypeMovIo
             return
 
-        if isinstance(resource.state, MotionState):
+        if not isinstance(resource.state, MotionState):
             return
 
         module = api.modules.get_module_of_io(resource.id)
@@ -180,10 +180,10 @@ async def async_setup_domintell_events(bridge):
         if resource.io_type != 9:  # TypeIrIo
             return
 
-        if isinstance(resource.state, PushState):
+        if not isinstance(resource.state, PushState):
             return
 
-        if isinstance(resource.key, int):
+        if not isinstance(resource.key, int):
             return
 
         module = api.modules.get_module_of_io(resource.id)
