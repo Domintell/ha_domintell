@@ -917,6 +917,18 @@ class LpAppInfo:
 
         return {"nbr_of_channels": nbr_of_channels, "result": result}
 
+    def _convert_legacy_ism20_io_num(self, val: str) -> int:
+        # Case A to F (Hexa)
+        if val.isalpha():
+            return int(val, 16)
+
+        # Case numerical
+        num = int(val)
+        if 10 <= num <= 15:
+            return num + 6
+
+        return num
+
     def _parse_legacy_line(self, line: str):
         module_type = line[:3].strip()
         serial_number: str = line[3:9]
