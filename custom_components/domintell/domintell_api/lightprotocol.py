@@ -333,7 +333,16 @@ class LpStatus:
             # Parse single value as hexadecimal integer
             try:
                 self._raw_data = self._raw_data.replace(" ", "0")
-                output_state = int(self._raw_data, 16)
+
+                if self._module_type == "IS8":
+                    output_state = int(self._raw_data[:2], 16)
+                elif self._module_type == "I20":
+                    output_state = int(
+                        self._raw_data[4:6] + self._raw_data[2:4] + self._raw_data[0:2],
+                        16,
+                    )
+                else:
+                    output_state = int(self._raw_data, 16)
             except ValueError as ex:
                 raise ValueError("Invalid raw data (not in hexadecimal format)") from ex
 
