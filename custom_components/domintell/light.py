@@ -114,15 +114,17 @@ class DomintellLight(LightEntity):
         # Case of Lights group
         self._status_ref_io: str | None = None
         if self._resource.module_type == "MEM":
+            self._color_mode = set()
             ref_io: str = self._resource.ref_io
 
             if ref_io is not None:
                 self._status_ref_io = self._api.modules.get_io(ref_io)
-                self._color_mode = self._status_ref_io.color_mode
-                self._state = self._status_ref_io.state
-                if hasattr(self._resource, "brightness_scale"):
-                    self._brightness_scale = self._status_ref_io.brightness_scale
-                    self._brightness = self._status_ref_io.brightness
+                if self._status_ref_io is not None:
+                    self._color_mode = self._status_ref_io.color_mode
+                    self._state = self._status_ref_io.state
+                    if hasattr(self._resource, "brightness_scale"):
+                        self._brightness_scale = self._status_ref_io.brightness_scale
+                        self._brightness = self._status_ref_io.brightness
 
         self._attr_supported_color_modes: set[ColorMode] = set()
 

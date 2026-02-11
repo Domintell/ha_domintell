@@ -995,6 +995,11 @@ class LpAppInfo:
             io_offset = int(line[3:9], 16)
             io_name: str = line[9 : line.find("[")].strip()
 
+            # Modules DDMX01 not supported
+            # ie: extra_info: ['DMX', 'REF=DMX000012-1']
+            if extra_info[0] == "DMX" and extra_info[1].startswith("REF=DMX"):
+                return None
+
         elif module_type in ("QG1", "QG2", "NT1", "NT2", "RS2", "ET2"):
             # ie: "NT1000001[VERS=0x09]Module DNET01[House||]"
             # ie: "NT2000016[VERS=0x10]Module DNET02[Maison||]"

@@ -45,7 +45,7 @@ SUPPORTED_MODULE_TYPE_LIST = (
     "MON",  # DMONOELEC01
     "TRI",  # DTRIELEC01
     "LT2",  # DTSC02
-    # "DMX",  # DMX01 #TODO For now
+    # "DMX",  # DDMX01 #TODO For now
     "LT4",  # DTSC04
     "BR4",  # DPBR04
     "DAL",  # DINTDALI01
@@ -340,7 +340,7 @@ LEGACY_MODULE_TYPE_LIST = (
     "BR2",  # DPBR02
     "ET2",  # DRS23202
     "LT2",  # DTSC02
-    "DMX",  # DMX01
+    "DMX",  # DDMX01
     "LT4",  # DTSC04
     "T35",  # DTSC35
     "VI1",  # DVIP01
