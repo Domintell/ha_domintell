@@ -1020,7 +1020,7 @@ class TorIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1062,7 +1062,7 @@ class TorBasicTempoIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1278,7 +1278,7 @@ class LedIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1327,7 +1327,7 @@ class Led8cIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1376,7 +1376,7 @@ class LedRgbIo(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1425,7 +1425,7 @@ class PblcdIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return self.state
+        return self._state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1474,7 +1474,7 @@ class Out10VIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
 
     @property
     def brightness_scale(self) -> tuple:
@@ -1485,7 +1485,7 @@ class Out10VIO(BaseIO):
         return self._state
 
     def is_on(self) -> bool:
-        return True if self.state > 0 else False
+        return True if self._state > 0 else False
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1646,7 +1646,7 @@ class DimmerIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
 
     @property
     def brightness_scale(self) -> tuple:
@@ -1657,7 +1657,7 @@ class DimmerIO(BaseIO):
         return self._state
 
     def is_on(self) -> bool:
-        return True if self.state > 0 else False
+        return True if self._state > 0 else False
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1715,7 +1715,7 @@ class LbIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
 
     @property
     def brightness_scale(self) -> tuple:
@@ -1726,7 +1726,7 @@ class LbIO(BaseIO):
         return self._state
 
     def is_on(self) -> bool:
-        return True if self.state > 0 else False
+        return True if self._state > 0 else False
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -1856,7 +1856,7 @@ class DmxIO(BaseIO):
             return self._state.get_max_value()
 
     def is_on(self) -> bool:
-        state = self.state
+        state = self._state
         if type(state) == int:
             return True if state > 0 else False
         else:
@@ -1946,7 +1946,7 @@ class DaliIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
 
     @property
     def brightness_scale(self) -> tuple:
@@ -1957,7 +1957,7 @@ class DaliIO(BaseIO):
         return self._state
 
     def is_on(self) -> bool:
-        return True if self.state > 0 else False
+        return True if self._state > 0 else False
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -2020,7 +2020,7 @@ class RgbwIO(BaseIO):
         return self._state.get_max_value()
 
     def is_on(self) -> bool:
-        state = self.state
+        state = self._state
         if (state.r > 0) or (state.g > 0) or (state.b > 0) or (state.w > 0):
             return True
         else:
@@ -2043,7 +2043,7 @@ class RgbwIO(BaseIO):
 
     async def set_intensity(self, value: int) -> None:
         # intensity = [16, 0, 0, 0, 0, value]
-        color = self.state
+        color = self._state
         intensity = [31, color.r, color.g, color.b, color.w, value]
 
         command_message = LpCommand(self.id, "Set Color", intensity)
@@ -2129,7 +2129,7 @@ class In10VIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
         self.update_attributes()
 
     def update_attributes(self):
@@ -2149,7 +2149,7 @@ class In10VIO(BaseIO):
                 pass
 
     def is_on(self) -> bool:
-        return True if self.state > 0 else False
+        return True if self._state > 0 else False
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -2233,7 +2233,7 @@ class IrIO(BaseIO):
     @key.setter
     def key(self, state: int) -> None:
         # Make sure we have maximum 32
-        self._state = 0 if self.state > 32 else state
+        self._state = 0 if state > 32 else state
 
     @state.setter
     def state(self, state: PushState) -> None:
@@ -2286,7 +2286,7 @@ class DfanComboIO(BaseIO):
         return self._state
 
     def is_on(self) -> bool:
-        return True if self.state.speed > 0 else False
+        return True if self._state.speed > 0 else False
 
     @state.setter
     def state(self, state: DfanComboState) -> None:
@@ -2413,7 +2413,7 @@ class FanIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have maximum 255
-        self._state = 255 if self.state > 255 else state
+        self._state = 255 if state > 255 else state
 
     def is_on(self) -> bool:
         if self._state == 0 or self._state == 255:
@@ -2538,7 +2538,7 @@ class VanesIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have maximum 255
-        self._state = 255 if self.state > 255 else state
+        self._state = 255 if state > 255 else state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -3072,7 +3072,7 @@ class PercentIO(BaseIO):
     @state.setter
     def state(self, state: int) -> None:
         # Make sure we have state from 0 to 100%
-        self._state = 0 if self.state < 0 else 100 if self.state > 100 else state
+        self._state = 0 if state < 0 else 100 if state > 100 else state
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -3183,7 +3183,7 @@ class VarIO(BaseIO):
         self._state = state
 
     def is_on(self) -> bool:
-        return False if self.state == 0 else True
+        return False if self._state == 0 else True
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
@@ -3303,7 +3303,7 @@ class VarSysIO(BaseIO):
             setattr(self, "night_and_day", "night" if self._state == 0 else "day")
 
     def is_on(self) -> bool:
-        return False if self.state == 0 else True
+        return False if self._state == 0 else True
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")

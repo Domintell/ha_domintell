@@ -84,7 +84,7 @@ def construct_endpoint_id(data: str):
             io_offset = int(data[3:9], 16)
 
         else:
-            if module_type == "DAL":
+            if module_type == "DAL" and len(data) >= 12:
                 io_num_str = data[10] + data[11]
             else:
                 io_num_str = data[10]
