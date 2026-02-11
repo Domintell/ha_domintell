@@ -140,10 +140,11 @@ class DomintellLight(LightEntity):
         if not self._attr_supported_color_modes:
             self._attr_supported_color_modes.add(ColorMode.ONOFF)
 
-        if hasattr(self._resource, "light_type"):
-            self._attr_extra_state_attributes = {
-                "light_type": self._resource.light_type
-            }
+        if self._resource.module_type != "MEM":
+            if hasattr(self._resource, "light_type"):
+                self._attr_extra_state_attributes = {
+                    "light_type": self._resource.light_type
+                }
 
     @property
     def name(self) -> str:
