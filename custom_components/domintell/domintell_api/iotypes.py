@@ -2633,6 +2633,7 @@ class SensorIO(BaseIO):
                     "setpoint_step": float(self.extra_info[6]),
                 }
             else:
+                # Case of PROG M < 37
                 config_dict = {
                     "regul_mask": int(self.extra_info[0], 16),
                     "temp_mask": int(self.extra_info[1], 16),
