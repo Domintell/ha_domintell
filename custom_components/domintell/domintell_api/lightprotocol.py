@@ -1211,13 +1211,14 @@ class LpAppInfo:
                             final_extra_info = [HMR, HMT]
 
                         # Extract data
-                        # data_pattern = r"(LHH|LHL|LCH|LCL|ISP)=(\d+\.\d+)"
-                        data_pattern = r"LHH=(\d+\.\d+)-LHL=(\d+\.\d+)-LCH=(\d+\.\d+)-LCL=(\d+\.\d+)-ISP=(\d+\.\d+)"
-                        match_data = re.search(data_pattern, local_extra_info[1])
+                        if len(local_extra_info) >= 2:
+                            # data_pattern = r"(LHH|LHL|LCH|LCL|ISP)=(\d+\.\d+)"
+                            data_pattern = r"LHH=(\d+\.\d+)-LHL=(\d+\.\d+)-LCH=(\d+\.\d+)-LCL=(\d+\.\d+)-ISP=(\d+\.\d+)"
+                            match_data = re.search(data_pattern, local_extra_info[1])
 
-                        if match_data:
-                            LHH, LHL, LCH, LCL, ISP = match_data.groups()
-                            final_extra_info.extend([LHH, LHL, LCH, LCL, ISP])
+                            if match_data:
+                                LHH, LHL, LCH, LCL, ISP = match_data.groups()
+                                final_extra_info.extend([LHH, LHL, LCH, LCL, ISP])
 
                         link = None
                         if extra_info[1] == "LOCAL":

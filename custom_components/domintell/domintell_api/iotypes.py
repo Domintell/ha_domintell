@@ -2622,15 +2622,21 @@ class SensorIO(BaseIO):
         # Process configuration
         # Format:  extra_info: [<regul_mask>,<temperature_mask>,<heat_limit_high>,<heat_limit_low>,<cool_limit_high>,<cool_limit_low>,<setpoint_step>, ...]
         try:
-            config_dict = {
-                "regul_mask": int(self.extra_info[0], 16),
-                "temp_mask": int(self.extra_info[1], 16),
-                "heat_limit_high": float(self.extra_info[2]),
-                "heat_limit_low": float(self.extra_info[3]),
-                "cool_limit_high": float(self.extra_info[4]),
-                "cool_limit_low": float(self.extra_info[5]),
-                "setpoint_step": float(self.extra_info[6]),
-            }
+            if len(self.extra_info) >= 7:
+                config_dict = {
+                    "regul_mask": int(self.extra_info[0], 16),
+                    "temp_mask": int(self.extra_info[1], 16),
+                    "heat_limit_high": float(self.extra_info[2]),
+                    "heat_limit_low": float(self.extra_info[3]),
+                    "cool_limit_high": float(self.extra_info[4]),
+                    "cool_limit_low": float(self.extra_info[5]),
+                    "setpoint_step": float(self.extra_info[6]),
+                }
+            else:
+                config_dict = {
+                    "regul_mask": int(self.extra_info[0], 16),
+                    "temp_mask": int(self.extra_info[1], 16),
+                }
 
             self._configuration = ThermostatConfig(**config_dict)
             self._have_link = (
@@ -2672,7 +2678,7 @@ class SensorIO(BaseIO):
 
     @property
     def is_thermostat(self) -> bool:
-        return False if self.config.regul_mask == 255 else True
+        return True
 
     async def update_state(self) -> None:
         await self._send_command("Get Status")
