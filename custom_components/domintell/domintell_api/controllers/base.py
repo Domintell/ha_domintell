@@ -1,5 +1,6 @@
 import asyncio
-from asyncio.coroutines import iscoroutinefunction
+
+from inspect import iscoroutinefunction
 from collections.abc import Callable
 from .events import EventCallBackType, EventType, ResourceTypes
 

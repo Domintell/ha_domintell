@@ -3,7 +3,8 @@ from collections.abc import Callable
 from enum import Enum
 import copy
 import asyncio
-from asyncio.coroutines import iscoroutinefunction
+
+from inspect import iscoroutinefunction
 from typing import TypedDict
 import time
 from uuid import uuid4
