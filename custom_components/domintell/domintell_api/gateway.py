@@ -354,9 +354,9 @@ class DomintellGateway:
             self._disconnect_timestamp = time.time()
             # TODO see to send an error event to HA
         elif event_type == EventType.RECONNECTED:
-            # If the time between the disconnect and reconnect is more than 10 seconds,
+            # If the time between the disconnect and reconnect is more than 2 seconds,
             # We ask for the appinfo else we fetch the full state.
-            if (time.time() - self._disconnect_timestamp) > 10:
+            if (time.time() - self._disconnect_timestamp) > 2:
                 # Request APPINFO
                 self._logger.info("Request APPINFO")
                 await self._client.request_appinfo()
