@@ -110,6 +110,7 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
                 pattern = r"^(dgqg|dnet)\d{2}-\d+\.local$"
                 if re.match(pattern, host) is not None:
                     device_unique_id = host.replace(".local", "")
+                    self.name = device_unique_id.upper()
                 else:
                     return await self.async_step_select_module(user_input)
             except InvalidCredentials as ex:
@@ -147,6 +148,7 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
             device_unique_id = (
                 f"{user_input[CONF_MODULE_TYPE].lower()}-{user_input[CONF_MODULE_SN]}"
             )
+            self.name = device_unique_id.upper()
 
             await self.async_set_unique_id(device_unique_id, raise_on_progress=False)
             self._abort_if_unique_id_configured(updates=user_input)
