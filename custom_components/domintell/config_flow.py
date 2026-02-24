@@ -144,7 +144,12 @@ class DomintellConfigFlow(ConfigFlow, domain=DOMAIN):
         """Module type and serial configuration."""
         errors = {}
 
+        if user_input is not None and CONF_HOST in user_input:
+            self._init_data = user_input
+
         if user_input and (CONF_MODULE_TYPE in user_input):
+            user_input.update(self._init_data)
+
             device_unique_id = (
                 f"{user_input[CONF_MODULE_TYPE].lower()}-{user_input[CONF_MODULE_SN]}"
             )
