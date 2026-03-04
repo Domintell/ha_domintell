@@ -11,6 +11,7 @@ from ..const import (
     GATEWAY_MODULE_TYPE_LIST,
     IO_TYPES_STRING,
     MODULE_TYPE_DICTIONNARY,
+    get_module_type_by_model,
 )
 
 
@@ -68,13 +69,13 @@ class ModulesController(BaseController):
             module_id = module_type_num + id[3:9]
         else:
             # For io attached to the gateway, you should not rely on the construction of the module_id
+            module_id = None
             for module in self._items.values():
                 for io in module:
                     if io.id == id:
                         module_id = module.id
-                        should_break = True
                         break
-                if should_break:
+                if module_id is not None:
                     break
 
         module = self.get_module(module_id)
@@ -99,9 +100,8 @@ class ModulesController(BaseController):
                 for io in module:
                     if io.id == io_id:
                         module_id = module.id
-                        should_break = True
                         break
-                if should_break:
+                if module_id is not None:
                     break
 
         if module_id is not None:
@@ -112,6 +112,7 @@ class ModulesController(BaseController):
         """Create instances of modules and their IOs"""
         instances = []
         seen_modules = set()  # To keep track of modules already encountered
+        deferred_ios = []  # VAR/SYS/SFE/MEM IOs deferred until gateway is available
 
         # Retrieve all instances of existing modules
         existing_modules = self.values()
@@ -119,14 +120,18 @@ class ModulesController(BaseController):
             instances.append(module)
             seen_modules.add(module.serial_number)
 
+        # --- Pass 1: Create all hardware modules and assign their IOs ---
         for element in ios:
             module_type = element["module_type"]
             module_sn = element["serial_number"]  # Serial number of the io module
 
+            # Defer IOs that belong to the gateway (VAR/SYS/SFE/MEM)
+            if module_type in NOT_A_MODULE_TYPE_LIST:
+                deferred_ios.append(element)
+                continue
+
             # Create and add module instance
-            if (module_sn not in seen_modules) and (
-                module_type not in NOT_A_MODULE_TYPE_LIST
-            ):
+            if module_sn not in seen_modules:
                 seen_modules.add(module_sn)
 
                 # Create a module instance with the element data
@@ -148,42 +153,65 @@ class ModulesController(BaseController):
                 None,
             )
 
-            # This io has not been assigned to any module
-            # This is the case for SFE, VAR and SYS
-            # So, they must be assigned to the gateway (Master or DNET)
-            if instance_of_module_io is None:
-                # Find the 1st module corresponding to this type
-                instance_of_module_io = next(
-                    (
-                        instance
-                        for instance in instances
-                        if instance.module_type
-                        in MASTER_MODULE_TYPE_LIST + DNET_MODULE_TYPE_LIST
-                    ),
-                    None,
-                )
-
             # Create and add io instance in module instance
             if instance_of_module_io is not None:
-                if (
-                    (module_type in MODULE_TYPE_OF_MODULES_WITH_NO_IO)
-                    and element["io_type"] == 0
-                    and element["io_offset"] == 0
-                ):
-                    # In this case it is not a real io, we do not create it
-                    pass
-                else:
-                    io_type_string = IO_TYPES_STRING.get(element["io_type"], 0)
+                self._add_io_to_module(instance_of_module_io, element)
 
-                    if (
-                        io_type_string in instance_of_module_io.io_types
-                        or instance_of_module_io.module_type in GATEWAY_MODULE_TYPE_LIST
-                    ):
-                        instance_of_io = IOFactory().create_io(
-                            io_type_string, self._gateway, **element
+        # --- Ensure a gateway module exists for deferred IOs ---
+        gateway_module = next(
+            (
+                m
+                for m in instances
+                if m.module_type in GATEWAY_MODULE_TYPE_LIST
+            ),
+            None,
+        )
+
+        # If no gateway module was found in appinfo IOs, create one from
+        # gateway_info (config entry identity, or WebSocket discovery fallback).
+        if gateway_module is None:
+            gw_info = self._gateway.gateway_info
+            if gw_info is not None:
+                gw_model = gw_info.get("model", "")
+                gw_type = get_module_type_by_model(gw_model)
+                if gw_type is not None:
+                    try:
+                        gateway_module = ModuleFactory().create_module(
+                            gw_type, id=gw_info["id"], sw_version=None
                         )
+                        instances.append(gateway_module)
+                        seen_modules.add(gateway_module.serial_number)
+                        self._logger.debug(
+                            "Created gateway module %s (%s) from gateway info",
+                            gw_info["id"],
+                            gw_type,
+                        )
+                    except ValueError:
+                        self._logger.warning(
+                            "Gateway type '%s' not supported by ModuleFactory",
+                            gw_type,
+                        )
+                else:
+                    self._logger.warning(
+                        "Unknown gateway model '%s' from gateway info",
+                        gw_model,
+                    )
+            else:
+                self._logger.warning(
+                    "No gateway module in appinfo and no gateway info available; "
+                    "%d IOs (VAR/SYS/SFE/MEM) will not be assigned",
+                    len(deferred_ios),
+                )
 
-                        instance_of_module_io.add_io(element["id"], instance_of_io)
+        # --- Pass 2: Assign deferred IOs (VAR/SYS/SFE/MEM) to gateway ---
+        if gateway_module is not None and deferred_ios:
+            for element in deferred_ios:
+                self._add_io_to_module(gateway_module, element)
+        elif gateway_module is None and deferred_ios:
+            self._logger.warning(
+                "Dropping %d IOs (VAR/SYS/SFE/MEM) — no gateway module available",
+                len(deferred_ios),
+            )
 
         # Remove modules that were already present
         instances_to_keep = [
@@ -191,6 +219,29 @@ class ModulesController(BaseController):
         ]
 
         return instances_to_keep
+
+    def _add_io_to_module(self, module, element):
+        """Create an IO instance and add it to the given module."""
+        module_type = element["module_type"]
+
+        if (
+            (module_type in MODULE_TYPE_OF_MODULES_WITH_NO_IO)
+            and element["io_type"] == 0
+            and element["io_offset"] == 0
+        ):
+            # Placeholder IO from modules with no real IOs — skip
+            return
+
+        io_type_string = IO_TYPES_STRING.get(element["io_type"], 0)
+
+        if (
+            io_type_string in module.io_types
+            or module.module_type in GATEWAY_MODULE_TYPE_LIST
+        ):
+            instance_of_io = IOFactory().create_io(
+                io_type_string, self._gateway, **element
+            )
+            module.add_io(element["id"], instance_of_io)
 
     async def initialize(self, ios: dict):  # pylint: disable=W0221
         """Initialize modules list."""
