@@ -107,6 +107,7 @@ class DomintellGateway:
         )
         self._app: LpAppInfo | None = None
         self._module_gateway: Any | None = None
+        self._gateway_info: dict | None = None
 
         # Controllers
         self._modules = ModulesController(self)
@@ -147,6 +148,16 @@ class DomintellGateway:
     def get_module_gateway(self):
         """Return the gateway module we're currently connected to."""
         return self._module_gateway
+
+    @property
+    def gateway_info(self) -> dict | None:
+        """Return gateway identity info from config entry or discovery."""
+        return self._gateway_info or self._client.server_info
+
+    @gateway_info.setter
+    def gateway_info(self, info: dict | None) -> None:
+        """Set gateway identity info (from config entry)."""
+        self._gateway_info = info
 
     @property
     def host(self) -> str:

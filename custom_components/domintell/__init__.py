@@ -25,6 +25,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     module_serial_number_text = config_entry.unique_id.upper()
     module_info = gen_module_info(module_serial_number_text)
 
+    # Provide gateway identity to the API layer for module initialization
+    if module_info is not None:
+        bridge.api.gateway_info = module_info
+
     # Add bridge to device registry
     if module_info is not None:
         bridge.bridge_id = module_info["serial_number"]
