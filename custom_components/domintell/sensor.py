@@ -502,7 +502,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         key="total_energy_l1",
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_l1
         / 1000,  # data source is in Wh
@@ -515,7 +515,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"phase": "1"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_l1
         / 1000,  # data source is in Wh
@@ -528,7 +528,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"phase": "2"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_l2
         / 1000,  # data source is in Wh
@@ -541,7 +541,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"phase": "3"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.MEASUREMENT,
+        state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_l3
         / 1000,  # data source is in Wh
