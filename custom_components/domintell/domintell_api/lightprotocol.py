@@ -1435,7 +1435,7 @@ def convert_legacy_to_new_gen(legacy_status: LpStatus) -> list[LpStatus] | None:
     new_gen_status_list = []
 
     # newgen_status
-    if legacy_status.is_legacy:
+    if not legacy_status.is_legacy:
         return [legacy_status]
 
     if legacy_status.module_type in SHUTTERS_MODULE_TYPE_LIST:
