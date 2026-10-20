@@ -1521,10 +1521,10 @@ def convert_legacy_to_new_gen(legacy_status: LpStatus) -> list[LpStatus] | None:
         elif legacy_status.io_type == 2:  # TypeInputIo
             # newGen format
             # 0 -> Released
-            # 1 -> Start of short push
-            # 2 -> End of short push
-            # 3 -> Start of long push
-            # 4 -> End of long push
+            # 1 -> Start Of Short Push
+            # 2 -> End Of Short Push
+            # 3 -> Start Of Long Push
+            # 4 -> End Of Long Push
             # 5 -> Pressed
 
             # legacy format

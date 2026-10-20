@@ -1105,12 +1105,12 @@ class InputTriggerIO(BaseIO):
 
     async def execute_link(self, push_state: PushState) -> None:
         print(f"Execute link for {push_state} of InputTriggerIO id: {self.id}")
-        cmd = "Start of short push"
+        cmd = "Start Of Short Push"
         match push_state:
             case PushState.START_SHORT_PUSH:
-                cmd = "Start of short push"
+                cmd = "Start Of Short Push"
             case PushState.END_SHORT_PUSH:
-                cmd = "End of short push"
+                cmd = "End Of Short Push"
             case _:
                 print("Unkown push state:", push_state)
                 return
@@ -1149,16 +1149,16 @@ class InputIO(BaseIO):
 
     async def execute_link(self, push_state: PushState) -> None:
         print(f"Execute link for {push_state} of InputIO id: {self.id}")
-        cmd = "Start of short push"
+        cmd = "Start Of Short Push"
         match push_state:
             case PushState.START_SHORT_PUSH:
-                cmd = "Start of short push"
+                cmd = "Start Of Short Push"
             case PushState.END_SHORT_PUSH:
-                cmd = "End of short push"
+                cmd = "End Of Short Push"
             case PushState.START_LONG_PUSH:
-                cmd = "Start of long push"
+                cmd = "Start Of Long Push"
             case PushState.END_LONG_PUSH:
-                cmd = "End of long push"
+                cmd = "End Of Long Push"
             case _:
                 print("Unkown push state:", push_state)
                 return
@@ -2189,15 +2189,15 @@ class GestureIO(BaseIO):
         cmd = "Gesture up"
         match gesture:
             case GestureState.GESTURE_RIGHT:
-                cmd = "Gesture right"
+                cmd = "Gesture Right"
             case GestureState.GESTURE_LEFT:
-                cmd = "Gesture left"
+                cmd = "Gesture Left"
             case GestureState.GESTURE_UP:
-                cmd = "Gesture up"
+                cmd = "Gesture Up"
             case GestureState.GESTURE_DOWN:
-                cmd = "Gesture down"
+                cmd = "Gesture Down"
             case GestureState.GESTURE_PUSH:
-                cmd = "Gesture push"
+                cmd = "Gesture Push"
             case _:
                 print("Unkown gesture state:", gesture)
                 return
@@ -2588,12 +2588,12 @@ class MovIO(BaseIO):
 
     async def execute_link(self, detection_state: MotionState) -> None:
         print(f"Execute link for {detection_state} of MovIO id: {self.id}")
-        cmd = "Start of short push"
+        cmd = "Start Of Short Push"
         match detection_state:
             case MotionState.START_DETECTION:
-                cmd = "Start of detection"
+                cmd = "Start Of Detection"
             case MotionState.END_DETECTION:
-                cmd = "End of detection"
+                cmd = "End Of Detection"
             case _:
                 print("Unkown detection state:", detection_state)
                 return
