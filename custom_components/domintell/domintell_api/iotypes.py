@@ -2202,6 +2202,8 @@ class GestureIO(BaseIO):
                 print("Unkown gesture state:", gesture)
                 return
 
+        await self._send_command(cmd)
+
     async def _send_command(self, cmd: str, value: int = 0) -> None:
         command_message = LpCommand(self.id, cmd, [value])
         await self._gateway._client.send_command(command_message)

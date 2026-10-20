@@ -339,7 +339,7 @@ class DRGBW01(BaseModule):
         super().__init__("RW1", id, sw_version)
 
         # The DRGBW01 module have the following io
-        # 4 DimmerIo or 1 RgbxIo with 4 Channel -> Depends on module configuration
+        # 4 DimmerIO or 1 RgbxIO with 4 Channel -> Depends on module configuration
 
 
 class DDMX01(BaseModule):
@@ -572,7 +572,7 @@ class DPBR06(BaseModule):
 
         # The DPBR06 module have the following io
         # 6 InputIO
-        # 6 LedRgbIo
+        # 6 LedRgbIO
 
 
 class DPBC01(BaseModule):
@@ -632,7 +632,7 @@ class DPBRT0x(BaseModule):
         # The DPBRT0x module have the following io
         # up to 6 InputIO
         # 1 SensorIO
-        # up to 6 LedRgbIo
+        # up to 6 LedRgbIO
 
 
 class DTSC02(BaseModule):
@@ -642,8 +642,8 @@ class DTSC02(BaseModule):
         super().__init__("LT2", id, sw_version)
 
         # The DTSC02 module have the following io
-        # 4 InputIo
-        # 1 SensorIo
+        # 4 InputO
+        # 1 SensorIO
         # 1 IrIO
         # 4 LedIO
 
@@ -655,8 +655,8 @@ class DTSC04(BaseModule):
         super().__init__("LT4", id, sw_version)
 
         # The DTSC04 module have the following io
-        # 4 InputIo
-        # 1 SensorIo
+        # 4 InputIO
+        # 1 SensorIO
         # 1 IrIO
         # 4 LedIO
 
@@ -668,11 +668,11 @@ class DTSC05(BaseModule):
         super().__init__("LT5", id, sw_version)
 
         # The DTSC05 module have the following io
-        # 4 InputIo
-        # 4 LedIo
-        # 1 SensorIo
-        # 1 VideoIo
-        # 1 HumidityIo
+        # 4 InputIO
+        # 4 LedIO
+        # 1 SensorIO
+        # 1 VideoIO
+        # 1 HumidityIO
         # 1 GestureIO
 
 
@@ -746,9 +746,9 @@ class DENV01(BaseModule):
 
         # The DENV01 module have the following io
         # 1 SensorIO
-        # 1 LuxIo
-        # 1 HumidityIo
-        # 1 PressureIo
+        # 1 LuxIO
+        # 1 HumidityIO
+        # 1 PressureIO
 
 
 class DENV02(BaseModule):
@@ -759,8 +759,8 @@ class DENV02(BaseModule):
 
         # The DENV02 module have the following io
         # 1 SensorIO
-        # 1 HumidityIo
-        # 1 Co2Io
+        # 1 HumidityIO
+        # 1 Co2IO
 
 
 class DALI04(BaseModule):
@@ -874,7 +874,7 @@ class DAMPLI01(BaseModule):
         super().__init__("AMP", id, sw_version)
 
         # The DAMPLI01 module have the following io
-        # Up to 4 SoundIo
+        # Up to 4 SoundIO
 
 
 class DMODBUS(BaseModule):
