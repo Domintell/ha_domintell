@@ -539,7 +539,7 @@ class DPBL01(BaseModule):
 
         # The DPBL01 module have the following io
         # 1 InputIO
-        # 1 Led8cIo
+        # 1 Led8cIO
 
 
 class DPBL02(BaseModule):
@@ -550,7 +550,7 @@ class DPBL02(BaseModule):
 
         # The DPBL02 module have the following io
         # 2 InputIO
-        # 2 Led8cIo
+        # 2 Led8cIO
 
 
 class DPBL04(BaseModule):
@@ -561,7 +561,7 @@ class DPBL04(BaseModule):
 
         # The DPBL04 module have the following io
         # 4 InputIO
-        # 4 Led8cIo
+        # 4 Led8cIO
 
 
 class DPBR06(BaseModule):
@@ -583,7 +583,7 @@ class DPBC01(BaseModule):
 
         # The DPBC01 module have the following io
         # 1 InputIO
-        # 1 Led8cIo
+        # 1 Led8cIO
         # 1 SensorIO
 
 
@@ -595,7 +595,7 @@ class DPBC02(BaseModule):
 
         # The DPBC02 module have the following io
         # 2 InputIO
-        # 2 Led8cIo
+        # 2 Led8cIO
         # 1 SensorIO
 
 
@@ -607,7 +607,7 @@ class DPBC04(BaseModule):
 
         # The DPBC04 module have the following io
         # 4 InputIO
-        # 4 Led8cIo
+        # 4 Led8cIO
         # 1 SensorIO
 
 
@@ -619,7 +619,7 @@ class DPBC06(BaseModule):
 
         # The DPBC06 module have the following io
         # 6 InputIO
-        # 6 Led8cIo
+        # 6 Led8cIO
         # 1 SensorIO
 
 
