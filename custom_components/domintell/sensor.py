@@ -19,7 +19,6 @@ from homeassistant.const import (
     LIGHT_LUX,
     PERCENTAGE,
     DEGREE,
-    CONCENTRATION_PARTS_PER_MILLION,
     EntityCategory,
     UnitOfTemperature,
     UnitOfPressure,
@@ -31,6 +30,14 @@ from homeassistant.const import (
     UnitOfPower,
     UnitOfVolume,
 )
+
+try:
+    from homeassistant.const import UnitOfRatio
+
+    CONCENTRATION_PARTS_PER_MILLION = UnitOfRatio.PARTS_PER_MILLION
+except ImportError:
+    from homeassistant.const import CONCENTRATION_PARTS_PER_MILLION
+
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
