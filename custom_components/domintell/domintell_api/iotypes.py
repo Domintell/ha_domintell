@@ -61,7 +61,7 @@ class RegulationMode(Enum):
     HEATING = 1
     COOLING = 2
     MIXED = 3
-    AUTO = 5
+    AUTOHVAC = 5
     DRY = 6
     FAN = 7
 
