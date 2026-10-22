@@ -56,8 +56,14 @@ async def async_setup_devices(bridge: DomintellBridge):
 
         # Add via_device if necessary
         if device_id != bridge_id:
+            # Look for the parent bridge in the registry
             if hasattr(dev_reg, "async_get_device_by_identifier"):
-                params["via_device_id"] = bridge_id
+                parent_device = dev_reg.async_get_device_by_identifier(
+                    identifier=(DOMAIN, bridge_id), config_entry_id=entry.entry_id
+                )
+
+                if parent_device:
+                    params["via_device_id"] = parent_device.id
 
             else:
                 # Support for older versions of HA (< 2026.8.0)
