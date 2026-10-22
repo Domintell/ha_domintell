@@ -1630,10 +1630,7 @@ class DimmerIO(BaseIO):
             LightColorMode.BRIGHTNESS,
         }
 
-        if self.module_type == "DIM":
-            self._brightness_scale = (10, 100)
-        else:
-            self._brightness_scale = (1, 100)
+        self._brightness_scale = (1, 100)
 
     @property
     def color_mode(self) -> LightColorMode:
