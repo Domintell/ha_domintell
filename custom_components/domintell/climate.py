@@ -51,7 +51,7 @@ REGULATION_MODE_TO_HASS: Final[dict[RegulationMode, HVACMode]] = {
     RegulationMode.HEATING: HVACMode.HEAT,
     RegulationMode.COOLING: HVACMode.COOL,
     RegulationMode.MIXED: HVACMode.HEAT_COOL,
-    RegulationMode.AUTO: HVACMode.AUTO,
+    RegulationMode.AUTOHVAC: HVACMode.AUTO,
     RegulationMode.DRY: HVACMode.DRY,
     RegulationMode.FAN: HVACMode.FAN_ONLY,
 }
@@ -195,7 +195,7 @@ class DomintellThermostat(ClimateEntity):
                 return HVACAction.DRYING
             case RegulationMode.FAN:
                 return HVACAction.FAN
-            case RegulationMode.MIXED | RegulationMode.AUTO:
+            case RegulationMode.MIXED | RegulationMode.AUTOHVAC:
                 if (
                     self.current_temperature is not None
                     and self.target_temperature_low is not None
@@ -306,7 +306,7 @@ class DomintellThermostat(ClimateEntity):
             case HVACMode.HEAT_COOL:
                 regulation_mode = RegulationMode.MIXED
             case HVACMode.AUTO:
-                regulation_mode = RegulationMode.AUTO
+                regulation_mode = RegulationMode.AUTOHVAC
             case HVACMode.DRY:
                 regulation_mode = RegulationMode.DRY
             case HVACMode.FAN_ONLY:

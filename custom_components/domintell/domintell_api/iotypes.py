@@ -71,7 +71,7 @@ regul_mode_bit_mapping = {
     RegulationMode.HEATING: 1,
     RegulationMode.COOLING: 2,
     RegulationMode.MIXED: 3,
-    RegulationMode.AUTO: 4,
+    RegulationMode.AUTOHVAC: 4,
     RegulationMode.DRY: 5,
     RegulationMode.FAN: 6,
 }
