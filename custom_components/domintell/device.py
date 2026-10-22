@@ -14,7 +14,6 @@ from homeassistant.const import (
     ATTR_SW_VERSION,
     ATTR_HW_VERSION,
     ATTR_CONNECTIONS,
-    ATTR_VIA_DEVICE,
     ATTR_DEFAULT_NAME,
     ATTR_SUGGESTED_AREA,
 )
@@ -57,7 +56,12 @@ async def async_setup_devices(bridge: DomintellBridge):
 
         # Add via_device if necessary
         if device_id != bridge_id:
-            params[ATTR_VIA_DEVICE] = (DOMAIN, bridge_id)
+            if hasattr(dev_reg, "async_get_device_by_identifier"):
+                params["via_device_id"] = bridge_id
+
+            else:
+                # Support for older versions of HA (< 2026.8.0)
+                params["via_device"] = (DOMAIN, bridge_id)
 
         return dev_reg.async_get_or_create(config_entry_id=entry.entry_id, **params)
 
