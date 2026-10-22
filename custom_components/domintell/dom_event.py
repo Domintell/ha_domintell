@@ -44,7 +44,13 @@ async def async_setup_domintell_events(bridge):
 
         module = api.modules.get_module_of_io(resource.id)  # ie: "0A0012BF""
         device_uid = f"{conf_uid}_{module.id}"  # ie: "dnet02-22_0A0012BF"
-        device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
+
+        if hasattr(device_reg, "async_get_device_by_identifier"):
+            device = device_reg.async_get_device_by_identifier(
+                identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
+            )
+        else:
+            device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         if resource.state == PushState.RELEASED:
             value = "press"
@@ -89,7 +95,13 @@ async def async_setup_domintell_events(bridge):
 
         module = api.modules.get_module_of_io(resource.id)
         device_uid = f"{conf_uid}_{module.id}"
-        device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
+
+        if hasattr(device_reg, "async_get_device_by_identifier"):
+            device = device_reg.async_get_device_by_identifier(
+                identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
+            )
+        else:
+            device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         match resource.state:
             # case GestureState.GESTURE_RIGHT:
@@ -140,7 +152,13 @@ async def async_setup_domintell_events(bridge):
 
         module = api.modules.get_module_of_io(resource.id)
         device_uid = f"{conf_uid}_{module.id}"
-        device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
+
+        if hasattr(device_reg, "async_get_device_by_identifier"):
+            device = device_reg.async_get_device_by_identifier(
+                identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
+            )
+        else:
+            device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         match resource.state:
             case MotionState.START_DETECTION:
@@ -188,7 +206,13 @@ async def async_setup_domintell_events(bridge):
 
         module = api.modules.get_module_of_io(resource.id)
         device_uid = f"{conf_uid}_{module.id}"
-        device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
+
+        if hasattr(device_reg, "async_get_device_by_identifier"):
+            device = device_reg.async_get_device_by_identifier(
+                identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
+            )
+        else:
+            device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         value = IR_CODE_EVENTS_TYPES[resource.key]
 

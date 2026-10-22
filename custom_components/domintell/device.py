@@ -65,7 +65,13 @@ async def async_setup_devices(bridge: DomintellBridge):
     def remove_device(device_id: str) -> None:
         """Remove device from registry."""
 
-        if device := dev_reg.async_get_device(identifiers={(DOMAIN, device_id)}):
+        if device := (
+            dev_reg.async_get_device_by_identifier(
+                identifier=(DOMAIN, device_id), config_entry_id=entry.entry_id
+            )
+            if hasattr(dev_reg, "async_get_device_by_identifier")
+            else dev_reg.async_get_device(identifiers={(DOMAIN, device_id)})
+        ):
             # note: removal of any underlying entities is handled by core
             dev_reg.async_remove_device(device.id)
 
