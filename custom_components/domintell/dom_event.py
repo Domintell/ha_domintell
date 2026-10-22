@@ -50,6 +50,7 @@ async def async_setup_domintell_events(bridge):
                 identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
             )
         else:
+            # Support for older versions of HA (< 2026.8.0)
             device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         if resource.state == PushState.RELEASED:
@@ -101,6 +102,7 @@ async def async_setup_domintell_events(bridge):
                 identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
             )
         else:
+            # Support for older versions of HA (< 2026.8.0)
             device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         match resource.state:
@@ -158,6 +160,7 @@ async def async_setup_domintell_events(bridge):
                 identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
             )
         else:
+            # Support for older versions of HA (< 2026.8.0)
             device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         match resource.state:
@@ -212,6 +215,7 @@ async def async_setup_domintell_events(bridge):
                 identifier=(DOMAIN, device_uid), config_entry_id=conf_entry.entry_id
             )
         else:
+            # Support for older versions of HA (< 2026.8.0)
             device = device_reg.async_get_device(identifiers={(DOMAIN, device_uid)})
 
         value = IR_CODE_EVENTS_TYPES[resource.key]
