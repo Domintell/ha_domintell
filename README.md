@@ -142,7 +142,6 @@ This integration supports the following Domintell modules:
 ## Unsupported Devices and features
 
 - **Devices never supported:**
-
   - DGQG01
   - DVIP01
   - DVIP02
@@ -172,7 +171,7 @@ This integration supports the following Domintell modules:
 - **Variables:** Variables defined as "Master Only" are not exposed in Home Assistant.
 - **System variables:** Presence simulation is currently not available for NewGen Masters.
 - **Push buttons:** Depending on the configuration of your Domintell system within the GoldenGate software and the overall installation setup, not all press types are available.
-  - **Example:** If the installation does not have a DNET02 and the push button module is a legacy module, it is not possible to distinguish between a long press and a short press. Only device event "push" is usable.
+  - **Example:** If the installation does not have a DNET02 and the push button module is a legacy module, it is not possible to distinguish between a long press and a short press. Only device trigger "push" is usable.
 - **Thermostat:** For legacy modules, the status update may occur in two steps.
 - **DFAN01:** Changing mode or speed has no effect. This module is driven by a sensor and its temperature profile.
 - **DGQG01:** Compatibility with masters DGQG01 in association with the DNET01 module is not longer guaranteed.
