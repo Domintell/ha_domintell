@@ -221,6 +221,7 @@ class DomintellGesture(EventEntity):
                 #     value = "gesture_push"
                 case GestureState.UNKNOWN:
                     value = "unknown"
+                    return
                 case _:
                     value = "unknown"
                     return
@@ -354,6 +355,8 @@ class DomintellIrDetector(EventEntity):
             return
 
         if event_type == EventType.RESOURCE_UPDATED:
+            if resource.key == 0 or resource.state == PushState.UNKNOWN:
+                return
             # Note: Type of press (short, long) not handled
             value = IR_CODE_EVENTS_TYPES[resource.key]
             self._trigger_event(value)
