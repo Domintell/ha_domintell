@@ -2230,9 +2230,9 @@ class IrIO(BaseIO):
         return self._state
 
     @key.setter
-    def key(self, state: int) -> None:
+    def key(self, key: int) -> None:
         # Make sure we have maximum 32
-        self._state = 0 if state > 32 else state
+        self._key = 0 if key < 0 or key > 32 else key
 
     @state.setter
     def state(self, state: PushState) -> None:
