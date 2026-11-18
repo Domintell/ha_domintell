@@ -90,7 +90,6 @@ class DomintellBridge:
         self.authorized = True
         return True
 
-    @callback
     async def shutdown(self, event: Event) -> None:
         """Wrap the call to api.close.
 
