@@ -6,7 +6,7 @@ import asyncio
 import logging
 
 
-from homeassistant.core import callback, Event
+from homeassistant.core import Event
 from homeassistant import core
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_USERNAME, CONF_PASSWORD

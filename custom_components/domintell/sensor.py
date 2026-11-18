@@ -600,7 +600,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"tariff": "1"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.TOTAL,
         entity_registry_enabled_default=False,
         # If value is negative this means that there is more produced energy than consumed energy for this tariff.
         value_fn=lambda resource: resource.state.total_energy_for_t1
@@ -615,7 +615,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"tariff": "2"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.TOTAL,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_for_t2
         / 1000,  # data source is in Wh
@@ -630,7 +630,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"tariff": "3"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.TOTAL,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_for_t3
         / 1000,  # data source is in Wh
@@ -646,7 +646,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_placeholders={"tariff": "4"},
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.TOTAL,
         entity_registry_enabled_default=False,
         value_fn=lambda resource: resource.state.total_energy_for_t4
         / 1000,  # data source is in Wh
