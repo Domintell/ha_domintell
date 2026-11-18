@@ -45,6 +45,10 @@ BUTTON_DEVICE_TRIGGERS_TYPES = [
     "long_press",
 ]
 
+SIMPLE_PRESS_DEVICE_TRIGGERS_TYPES = [
+    "short_press",
+]
+
 GESTURE_EVENTS_TYPES = [
     # "gesture_right",
     # "gesture_left",

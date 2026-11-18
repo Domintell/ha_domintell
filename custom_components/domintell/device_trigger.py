@@ -25,6 +25,7 @@ from .const import (
     BUTTON_DEVICE_TRIGGERS_TYPES,
     GESTURE_EVENTS_TYPES,
     MOTION_EVENTS_TYPES,
+    SIMPLE_PRESS_DEVICE_TRIGGERS_TYPES,
     SIMPLE_PRESS_EVENTS_TYPES,
     IR_CODE_EVENTS_TYPES,
     CONF_SUBTYPE,
@@ -108,7 +109,7 @@ async def async_get_triggers(
                     )
 
             elif resource.io_type == 53:  # TypeInputTriggerIo
-                for event_type in SIMPLE_PRESS_EVENTS_TYPES:
+                for event_type in SIMPLE_PRESS_DEVICE_TRIGGERS_TYPES:
                     triggers.append(
                         {
                             **base_trigger,
