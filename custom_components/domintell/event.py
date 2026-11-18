@@ -287,9 +287,9 @@ class DomintellMotion(EventEntity):
         if event_type == EventType.RESOURCE_UPDATED:
             match resource.state:
                 case MotionState.START_DETECTION:
-                    value = "Start_detection"
+                    value = "start_detection"
                 case MotionState.END_DETECTION:
-                    value = "End_detection"
+                    value = "end_detection"
                 case MotionState.UNKNOWN:
                     value = "unknown"
                     return
