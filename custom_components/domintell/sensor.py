@@ -660,8 +660,12 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         key="tariff_indicator",
         translation_key="tariff_indicator",
         device_class=SensorDeviceClass.ENUM,
-        options=[1, 2, 3, 4],
-        value_fn=lambda resource: resource.state.tariff_indicator,
+        options=["1", "2", "3", "4"],
+        value_fn=lambda resource: (
+            str(resource.state.tariff_indicator)
+            if resource.state.tariff_indicator in (1, 2, 3, 4)
+            else None
+        ),
         exists_fn=lambda resource: (
             True if hasattr(resource.state, "tariff_indicator") else False
         ),
