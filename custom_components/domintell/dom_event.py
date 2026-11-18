@@ -24,6 +24,7 @@ async def async_setup_domintell_events(bridge):
     hass = bridge.hass
     api: DomintellGateway = bridge.api
     btn_controller = api.sensors.button
+    motion_controller = api.sensors.motion
     conf_entry = bridge.config_entry
     device_reg = dr.async_get(hass)
     conf_uid = conf_entry.unique_id
@@ -183,9 +184,9 @@ async def async_setup_domintell_events(bridge):
 
             hass.bus.async_fire(ATTR_DOMINTELL_EVENT, data)
 
-    # add listener for updates from `gesture` resource
+    # add listener for updates from `motion` resource
     conf_entry.async_on_unload(
-        btn_controller.subscribe(
+        motion_controller.subscribe(
             handle_move_event, event_filter=EventType.RESOURCE_UPDATED
         )
     )
@@ -231,7 +232,7 @@ async def async_setup_domintell_events(bridge):
 
             hass.bus.async_fire(ATTR_DOMINTELL_EVENT, data)
 
-    # add listener for updates from `gesture` resource
+    # add listener for updates from `ir_detector` resource
     conf_entry.async_on_unload(
         btn_controller.subscribe(
             handle_ir_detector_event, event_filter=EventType.RESOURCE_UPDATED
