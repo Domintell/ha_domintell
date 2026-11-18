@@ -187,7 +187,7 @@ class DomintellThermostat(ClimateEntity):
                 return HVACAction.IDLE
             case RegulationMode.COOLING:
                 setpoint = self._resource.state.active_cooling_setpoint
-                if self.current_temperature is None or setpoint is None:
+                if setpoint is None:
                     return None
                 if self.current_temperature > setpoint:
                     return HVACAction.COOLING
