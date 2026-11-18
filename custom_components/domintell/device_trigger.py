@@ -119,15 +119,14 @@ async def async_get_triggers(
                     )
 
             elif resource.io_type == 9:  # TypeIrIo
-                for event_type in IR_CODE_EVENTS_TYPES:
-                    for i in range(1, 33):
-                        triggers.append(
-                            {
-                                **base_trigger,
-                                CONF_TYPE: event_type,
-                                CONF_SUBTYPE: f"code {i}",
-                            }
-                        )
+                for key in range(1, 33):
+                    triggers.append(
+                        {
+                            **base_trigger,
+                            CONF_TYPE: IR_CODE_EVENTS_TYPES[key],
+                            CONF_SUBTYPE: f"code {key}",
+                        }
+                    )
 
     return triggers
 
