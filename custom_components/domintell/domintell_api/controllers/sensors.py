@@ -50,7 +50,38 @@ class ButtonController(BaseController):
 
             self._logger.debug(f"Update IO state for BUTTON/GESTURE IO Id: {item_id}")
 
-            if isinstance(my_io.state, PushState):
+            if my_io.io_type == 9:  # TypeIrIo
+                previous_key = my_io.key
+
+                # data = [key, push_state]
+                if (
+                    len(data) >= 2
+                    and isinstance(data[0], int)
+                    and isinstance(data[1], int)
+                ):
+                    new_state = PushState(data[1])
+
+                    my_io.key = data[0]
+                    my_io.state = new_state
+                    self._logger.debug(
+                        f"---> Ir detector New state: {my_io.state}, key: {my_io.key}"
+                    )
+                else:
+                    self._logger.warning(
+                        f"Status for Ir detector IO has an incorrect format: data={data}"
+                    )
+                    return
+
+                if previous_state == PushState.UNKNOWN:
+                    # Do not propagate the event if previous state was unknown
+                    # Case of the 1st start
+                    return
+
+                if my_io.state == previous_state and my_io.key == previous_key:
+                    # Propagate the event only if key or state has changed
+                    return
+
+            elif isinstance(my_io.state, PushState):
                 if (len(data) >= 1) and (isinstance(data[0], int)):
                     new_state = PushState(data[0])
 
@@ -92,32 +123,6 @@ class ButtonController(BaseController):
                     # Case of the 1st start
                     return
 
-            elif (isinstance(my_io.state, int)) and (my_io.io_type == 9):
-                # Case of Ir Detector
-                if (
-                    (len(data) >= 1)
-                    and (isinstance(data[0], int))
-                    and (isinstance(data[1], int))
-                ):
-                    # data = [key, push_state]
-                    my_io.key = event_data["data"][0]
-                    my_io.state = PushState(event_data["data"][1])
-                    self._logger.debug(
-                        f"---> Ir detector New state: {my_io.state}, key: {my_io.key}"
-                    )
-                else:
-                    self._logger.warning(
-                        f"Status for Ir detector IO has an incorrect format: data={data}"
-                    )
-
-                if previous_state == PushState.UNKNOWN:
-                    # Do not propagate the event if previous state was unknown
-                    # Case of the 1st start
-                    return
-
-                if my_io.state == previous_state:
-                    # Propagate the event only if it has had an update
-                    return
             else:
                 self._logger.warning(
                     f"The IO state type of Button/Gesture IO is not the expected one, state type: {type(my_io.state)}"
