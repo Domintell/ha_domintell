@@ -103,7 +103,8 @@ class DomintellCover(CoverEntity):
 
             if ref_io is not None:
                 self._status_ref_io = self._api.modules.get_io(ref_io)
-                self._state = self._status_ref_io.state
+                if self._status_ref_io is not None:
+                    self._state = self._status_ref_io.state
 
     @property
     def name(self) -> str:

@@ -111,12 +111,13 @@ class DomintellFan(FanEntity):
 
             if ref_io is not None:
                 self._status_ref_io = self._api.modules.get_io(ref_io)
-                self._number_of_speeds = self._status_ref_io.number_of_speeds
-                self._has_auto_speed = self._status_ref_io.has_auto_speed
-                self._has_off_speed = self._status_ref_io.has_off_speed
-                self._supports_speed = self._status_ref_io.supports_speed()
-                self._mode = self._status_ref_io.mode
-                self._speed = self._status_ref_io.speed
+                if self._status_ref_io is not None:
+                    self._number_of_speeds = self._status_ref_io.number_of_speeds
+                    self._has_auto_speed = self._status_ref_io.has_auto_speed
+                    self._has_off_speed = self._status_ref_io.has_off_speed
+                    self._supports_speed = self._status_ref_io.supports_speed()
+                    self._mode = self._status_ref_io.mode
+                    self._speed = self._status_ref_io.speed
 
         # Configuration of fan
         self._speed_range = (1, self._number_of_speeds)
