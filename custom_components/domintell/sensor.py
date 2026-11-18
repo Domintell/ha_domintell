@@ -586,7 +586,7 @@ ELECTRICITY_SENSORS: tuple[DomintellSensorEntityDescription, ...] = (
         translation_key="total_energy",
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         device_class=SensorDeviceClass.ENERGY,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.TOTAL,
         # Difference between forward and reverse energy (value is given in Wh)
         value_fn=lambda resource: resource.state.total_energy
         / 1000,  # data source is in Wh
