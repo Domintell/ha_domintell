@@ -1,7 +1,7 @@
 {
   "domain": "domintell",
   "name": "Domintell",
-  "codeowners": ["@Domintell, @domintellpublic", "@sgonnella"],
+  "codeowners": ["@Domintell", "@domintellpublic", "@sgonnella"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/Domintell/hacs_domintell#domintell-integration-for-home-assistant",
