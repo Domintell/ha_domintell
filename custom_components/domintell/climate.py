@@ -172,22 +172,24 @@ class DomintellThermostat(ClimateEntity):
         """The current HVAC action."""
         mode = self._resource.regulation_mode
 
+        if self.current_temperature is None:
+            return None
+
         match mode:
             case RegulationMode.OFF:
                 return HVACAction.OFF
             case RegulationMode.HEATING:
-                if (
-                    self.current_temperature
-                    < self._resource.state.active_heating_setpoint
-                ):
+                setpoint = self._resource.state.active_heating_setpoint
+                if setpoint is None:
+                    return None
+                if self.current_temperature < setpoint:
                     return HVACAction.HEATING
-                else:
-                    return HVACAction.IDLE
+                return HVACAction.IDLE
             case RegulationMode.COOLING:
-                if (
-                    self.current_temperature
-                    > self._resource.state.active_cooling_setpoint
-                ):
+                setpoint = self._resource.state.active_cooling_setpoint
+                if self.current_temperature is None or setpoint is None:
+                    return None
+                if self.current_temperature > setpoint:
                     return HVACAction.COOLING
                 else:
                     return HVACAction.IDLE
@@ -199,6 +201,7 @@ class DomintellThermostat(ClimateEntity):
                 if (
                     self.current_temperature is not None
                     and self.target_temperature_low is not None
+                    and self.target_temperature_high is not None
                 ):
                     if self.current_temperature > self.target_temperature_high:
                         return HVACAction.COOLING
