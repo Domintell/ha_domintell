@@ -24,7 +24,7 @@ from homeassistant.helpers import entity_registry as er
 from .domintell_api.controllers.events import EventType
 from .domintell_api import DomintellGateway
 from .domintell_api.gateway import gen_module_info
-from .const import DOMAIN
+from .const import DOMAIN, BRIDGES_LIST
 
 if TYPE_CHECKING:
     from .bridge import DomintellBridge
@@ -132,22 +132,21 @@ def async_remove_stale_entries(bridge: DomintellBridge) -> None:
     if module_info is not None:
         known_devices.add(f"{entry.unique_id}_{module_info['id']}")
 
-    # Entities to keep: unique_id is "<device_id>_<io_id>" or "<device_id>_<io_id>_<key>"
-    known_endpoints = set()
+    # Entities to keep: those whose IO is still in the APPINFO, whatever the module
+    # they are attached to (unique_id is "<entry>_<module>_<io_id>[_<key>]")
+    known_ios = set()
     for module in api.modules:
-        device_id = f"{entry.unique_id}_{module.id}"
-        known_devices.add(device_id)
+        known_devices.add(f"{entry.unique_id}_{module.id}")
         for io in module.values():
-            known_endpoints.add(f"{device_id}_{io.id}")
+            known_ios.add(io.id)
 
     ent_reg = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(ent_reg, entry.entry_id):
         unique_id = entity.unique_id
         if not unique_id.startswith(prefix):
             continue
-        if unique_id in known_endpoints or any(
-            unique_id.startswith(f"{endpoint}_") for endpoint in known_endpoints
-        ):
+        parts = unique_id.split("_")
+        if len(parts) >= 3 and parts[2] in known_ios:
             continue
         ent_reg.async_remove(entity.entity_id)
 
@@ -159,6 +158,10 @@ def async_remove_stale_entries(bridge: DomintellBridge) -> None:
         if not any(device_id.startswith(prefix) for device_id in device_ids):
             continue
         if any(device_id in known_devices for device_id in device_ids):
+            continue
+        # The gateway (DGQG0x / DNET0x) is never removed: a DNET can be missing
+        # from the APPINFO, it is then created from the config entry data
+        if (device.name or "").split("-")[0] in BRIDGES_LIST:
             continue
         # note: removal of the underlying entities is handled by core
         dev_reg.async_remove_device(device.id)
