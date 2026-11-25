@@ -119,6 +119,8 @@ class DomintellClient:
         self._on_appinfo: Callable[[str], None] = None
         self._keep_alive_task = None
         self._listen_task = None
+        self._reconnect_task = None
+        self._stopping: bool = False
         self._lp_version: str | None = None
         self._server_info: dict | None = None
         self._exit_on_error: bool = False
@@ -180,6 +182,30 @@ class DomintellClient:
     async def connect(self, exit_on_error: bool = False) -> None:
         """Start websocket connection."""
         self._exit_on_error = exit_on_error
+        self._stopping = False
+        await self._connect_loop(reconnecting=False)
+
+    async def _connect_loop(self, reconnecting: bool) -> None:
+        """Try to connect until success, without recursion."""
+        while not self._stopping:
+            try:
+                await self._connect_once()
+                return
+            except (InvalidCredentials, UserDatabaseEmpty) as ex:
+                if not reconnecting:
+                    raise
+                self._logger.error(f"The gateway refused the login - Reason : {ex}")
+            except Exception as ex:
+                if self._exit_on_error and not reconnecting:
+                    raise
+                self._logger.warning(
+                    f"The connection attempt on the gateway failed - Reason : {ex}"
+                )
+
+            await self._wait_before_retry()
+
+    async def _connect_once(self) -> None:
+        """Make a single connection attempt."""
         self._is_connected = False
         self._is_reconnected = False
         self._is_session_opened = False
@@ -212,7 +238,7 @@ class DomintellClient:
             response = await self._websocket.recv()
 
             if "ERROR:Max connected clients reached:ERROR" in response:
-                await self.disconnect()
+                await self._close()
                 raise MaxConnectedClient("Max connected clients reached")
 
             # INFO:Waiting for LOGINPSW:NONCE=8547165051709890817:INFO
@@ -291,12 +317,12 @@ class DomintellClient:
             self._listen_task = asyncio.create_task(self._listen_for_messages())
 
         except (InvalidCredentials, UserDatabaseEmpty) as ex:
-            await self.disconnect()
+            await self._close()
             raise type(ex)(str(ex))
 
         except websockets.exceptions.ConnectionClosedError as ex:
             # From LP version 42.9.0
-            await self.disconnect()
+            await self._close()
 
             if ex.reason == "ERROR:Invalid credentials:ERROR":
                 raise InvalidCredentials("Invalid credentials") from ex
@@ -321,7 +347,7 @@ class DomintellClient:
             #   [Errno 22] Invalid argument
             #   All other
 
-            await self.disconnect()
+            await self._close()
 
             if self._exit_on_error:
                 if str(ex) in (
@@ -334,13 +360,27 @@ class DomintellClient:
                     text = str(ex) or "unknown_error"
                     raise type(ex)(text) from ex
             else:
-                self._logger.warning(
-                    f"The connection attempt on the gateway failed - Reason : {ex}"
-                )
-                await self._reconnect()
+                # The retry is handled by _connect_loop
+                raise
 
     async def disconnect(self) -> None:
-        """Close websocket connection."""
+        """Close websocket connection and stop any reconnection in progress."""
+        self._stopping = True
+
+        if self._reconnect_task is not None:
+            # Stop the reconnection task
+            self._reconnect_task.cancel()
+            try:
+                await self._reconnect_task
+            except asyncio.CancelledError:
+                pass
+
+            self._reconnect_task = None
+
+        await self._close()
+
+    async def _close(self) -> None:
+        """Close the current websocket connection and its tasks."""
         if self._listen_task is not None:
             # Stop the reception task
             self._listen_task.cancel()
@@ -516,9 +556,11 @@ class DomintellClient:
 
             except Exception as ex:
                 self._logger.error(f"Error receiving message: {ex}")
-                await self.disconnect()
-                await self._reconnect()
                 break
+
+        # The connection is lost: reconnect from a separate task
+        if not self._stopping:
+            self._reconnect_task = asyncio.create_task(self._reconnect())
 
     async def _keep_alive(self, seconds: int = 40):
         while True:
@@ -527,7 +569,13 @@ class DomintellClient:
                 await self.send_message("HELLO\r\n")
 
     async def _reconnect(self) -> None:
-        """Retry to connect to Domintell bridge."""
+        """Close the lost connection then retry to connect to Domintell bridge."""
+        await self._close()
+        await self._wait_before_retry()
+        await self._connect_loop(reconnecting=True)
+
+    async def _wait_before_retry(self) -> None:
+        """Wait before a new connection attempt."""
         reconnect_wait = min(2 * self._connect_attempts, 30)
         # every 10 failed connect attempts log warning
         if self._connect_attempts % 10 == 0:
@@ -537,4 +585,3 @@ class DomintellClient:
                 self._connect_attempts,
             )
         await asyncio.sleep(reconnect_wait)
-        await self.connect()

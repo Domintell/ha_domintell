@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers import entity_registry as er
-from homeassistant.components.scene import DOMAIN as SCENE_DOMAIN, Scene as SceneEntity
+from homeassistant.components.scene import Scene as SceneEntity
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -15,6 +15,7 @@ from .domintell_api import DomintellGateway
 from .domintell_api.controllers import ScenesController
 from .domintell_api.controllers.events import EventType
 from .bridge import DomintellBridge
+from .entity import DomintellEntity
 from .const import DOMAIN
 
 
@@ -43,23 +44,8 @@ async def async_setup_entry(
         controller.subscribe(async_add_entity, event_filter=EventType.RESOURCE_ADDED)
     )
 
-    # Check for entities that no longer exist and remove them
-    entity_reg = er.async_get(hass)
-    reg_entities = er.async_entries_for_config_entry(entity_reg, config_entry.entry_id)
 
-    for entity in reg_entities:
-        if entity.domain != SCENE_DOMAIN:
-            continue
-
-        part = entity.unique_id.split("_")
-        if len(part) >= 3:
-            endpoint_id = part[2]
-
-            if endpoint_id not in controller.keys():
-                entity_reg.async_remove(entity.entity_id)
-
-
-class DomintellScene(SceneEntity):
+class DomintellScene(DomintellEntity, SceneEntity):
     """Representation of a Domintell Scene."""
 
     def __init__(self, bridge: DomintellBridge, controller: ScenesController, resource):
@@ -110,6 +96,7 @@ class DomintellScene(SceneEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(

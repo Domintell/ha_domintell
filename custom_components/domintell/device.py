@@ -19,10 +19,12 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
 
 from .domintell_api.controllers.events import EventType
 from .domintell_api import DomintellGateway
-from .const import DOMAIN, BRIDGES_LIST
+from .domintell_api.gateway import gen_module_info
+from .const import DOMAIN
 
 if TYPE_CHECKING:
     from .bridge import DomintellBridge
@@ -96,14 +98,67 @@ async def async_setup_devices(bridge: DomintellBridge):
             add_device(resource)
 
     # Create/update all current devices found in controllers
-    known_devices = [add_device(device) for device in dev_controller]
+    for device in dev_controller:
+        add_device(device)
 
-    # Check for nodes that no longer exist and remove them
-    for device in dr.async_entries_for_config_entry(dev_reg, entry.entry_id):
-        if device not in known_devices:
-            # Workaround for case the bridge is not in the list of discovered devices
-            if device.name.split("-")[0] not in BRIDGES_LIST:
-                dev_reg.async_remove_device(device.id)
+    # Remove what was deleted from the installation while Home Assistant was stopped
+    async_remove_stale_entries(bridge)
 
     # add listener for updates on Domintell controllers
     entry.async_on_unload(dev_controller.subscribe(handle_device_event))
+
+
+@callback
+def async_remove_stale_entries(bridge: DomintellBridge) -> None:
+    """Remove devices and entities that are no longer in the APPINFO.
+
+    Must only be called once the APPINFO has been received (gateway.initialize()
+    raises an error otherwise), so that the modules list is complete.
+    """
+    entry = bridge.config_entry
+    hass = bridge.hass
+    api: DomintellGateway = bridge.api
+
+    if len(api.modules) == 0:
+        # Incomplete data: never remove anything
+        return
+
+    # Only identifiers built by this integration are checked, others are never removed
+    prefix = f"{entry.unique_id}_"
+
+    # Devices to keep: the bridge and every module of the APPINFO
+    known_devices = {f"{entry.unique_id}_{bridge.bridge_id}"}
+    module_info = gen_module_info(entry.unique_id.upper())
+    if module_info is not None:
+        known_devices.add(f"{entry.unique_id}_{module_info['id']}")
+
+    # Entities to keep: unique_id is "<device_id>_<io_id>" or "<device_id>_<io_id>_<key>"
+    known_endpoints = set()
+    for module in api.modules:
+        device_id = f"{entry.unique_id}_{module.id}"
+        known_devices.add(device_id)
+        for io in module.values():
+            known_endpoints.add(f"{device_id}_{io.id}")
+
+    ent_reg = er.async_get(hass)
+    for entity in er.async_entries_for_config_entry(ent_reg, entry.entry_id):
+        unique_id = entity.unique_id
+        if not unique_id.startswith(prefix):
+            continue
+        if unique_id in known_endpoints or any(
+            unique_id.startswith(f"{endpoint}_") for endpoint in known_endpoints
+        ):
+            continue
+        ent_reg.async_remove(entity.entity_id)
+
+    dev_reg = dr.async_get(hass)
+    for device in dr.async_entries_for_config_entry(dev_reg, entry.entry_id):
+        device_ids = [
+            device_id for domain, device_id in device.identifiers if domain == DOMAIN
+        ]
+        if not any(device_id.startswith(prefix) for device_id in device_ids):
+            continue
+        if any(device_id in known_devices for device_id in device_ids):
+            continue
+        # note: removal of the underlying entities is handled by core
+        dev_reg.async_remove_device(device.id)

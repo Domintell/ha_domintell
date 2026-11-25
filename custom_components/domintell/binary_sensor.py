@@ -10,7 +10,6 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers import entity_registry as er
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.binary_sensor import (
-    DOMAIN as BINARY_SENSOR_DOMAIN,
     BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
@@ -32,6 +31,7 @@ from .domintell_api.controllers.sensors import (
 from .domintell_api.controllers.events import EventType
 from .domintell_api.iotypes import MotionState
 from .bridge import DomintellBridge
+from .entity import DomintellEntity
 from .const import DOMAIN
 
 type ControllerType = (MotionController | ContactController | TamperController)
@@ -118,23 +118,8 @@ async def async_setup_entry(
     # Setup for each binary sensor from domintell resource
     register_items(controller.motion)
 
-    # Check for entities that no longer exist and remove them
-    entity_reg = er.async_get(hass)
-    reg_entities = er.async_entries_for_config_entry(entity_reg, config_entry.entry_id)
 
-    for entity in reg_entities:
-        if entity.domain != BINARY_SENSOR_DOMAIN:
-            continue
-
-        part = entity.unique_id.split("_")
-        if len(part) >= 3:
-            endpoint_id = part[2]
-
-            if endpoint_id not in controller.motion.keys():
-                entity_reg.async_remove(entity.entity_id)
-
-
-class DomintellBinarySensor(BinarySensorEntity):
+class DomintellBinarySensor(DomintellEntity, BinarySensorEntity):
     """Representation of a Domintell binary sensor."""
 
     entity_description: DomintellBinarySensorEntityDescription
@@ -187,6 +172,7 @@ class DomintellBinarySensor(BinarySensorEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(

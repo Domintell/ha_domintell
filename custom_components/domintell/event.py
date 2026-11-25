@@ -22,6 +22,7 @@ from .domintell_api.controllers.sensors import (
 from .domintell_api.controllers.events import EventType
 from .domintell_api.iotypes import PushState, GestureState, MotionState
 from .bridge import DomintellBridge
+from .entity import DomintellEntity
 
 from .const import (
     DOMAIN,
@@ -70,7 +71,7 @@ async def async_setup_entry(
     )
 
 
-class DomintellButton(EventEntity):
+class DomintellButton(DomintellEntity, EventEntity):
     """Representation of a Domintell Button."""
 
     def __init__(self, bridge: DomintellBridge, controller: ButtonController, resource):
@@ -151,6 +152,7 @@ class DomintellButton(EventEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(
@@ -162,7 +164,7 @@ class DomintellButton(EventEntity):
         )
 
 
-class DomintellGesture(EventEntity):
+class DomintellGesture(DomintellEntity, EventEntity):
     """Representation of a Domintell Gesture."""
 
     def __init__(self, bridge: DomintellBridge, controller: ButtonController, resource):
@@ -231,6 +233,7 @@ class DomintellGesture(EventEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(
@@ -242,7 +245,7 @@ class DomintellGesture(EventEntity):
         )
 
 
-class DomintellMotion(EventEntity):
+class DomintellMotion(DomintellEntity, EventEntity):
     """Representation of a Domintell Motion detector."""
 
     def __init__(self, bridge: DomintellBridge, controller: MotionController, resource):
@@ -300,6 +303,7 @@ class DomintellMotion(EventEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(
@@ -311,7 +315,7 @@ class DomintellMotion(EventEntity):
         )
 
 
-class DomintellIrDetector(EventEntity):
+class DomintellIrDetector(DomintellEntity, EventEntity):
     """Representation of a Domintell IR detector."""
 
     def __init__(self, bridge: DomintellBridge, controller: ButtonController, resource):
@@ -364,6 +368,7 @@ class DomintellIrDetector(EventEntity):
 
     async def async_added_to_hass(self) -> None:
         """Call when entity is added."""
+        await super().async_added_to_hass()
 
         # Add value_changed callbacks.
         self.async_on_remove(

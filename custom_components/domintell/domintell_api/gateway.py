@@ -245,7 +245,7 @@ class DomintellGateway:
         while not self._initialized:
             await asyncio.sleep(0.1)
             if time.time() - start_time > 5:
-                return
+                raise TimeoutError("APPINFO not received from the gateway")
 
     async def close(self) -> None:
         """Close connection and cleanup."""
