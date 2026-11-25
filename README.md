@@ -28,13 +28,18 @@ You have to enable the local API to allow Home Assistant to communicate with you
 
 ### Installation Steps
 
-1.  **Using HACS (Home Assistant Community Store - Recommended):**
-    - Search for "Domintell" in the Integrations section of HACS.
-    - Click "Install."
-2.  **Manual Installation:**
-    - Download the latest release from the GitHub repository.
-    - Copy the `domintell` folder into your Home Assistant's `custom_components` directory.
-    - Restart Home Assistant.
+1. **Using the Home Assistant Marketplace (Recommended - HA 2026.11.0+):**
+   - Navigate to the **Marketplace** in Home Assistant
+   - Search for **"Domintell"** in the Integrations section.
+   - Click **Install** and restart Home Assistant.
+2. **Using HACS (Legacy - HA versions prior to 2026.11.0):**
+   - Open **HACS** in your Home Assistant instance.
+   - Search for **"Domintell"** in the Integrations section.
+   - Click **Install** and restart Home Assistant.
+3. **Manual Installation:**
+   - Download the latest release from the GitHub repository.
+   - Copy the `domintell` folder into your Home Assistant's `custom_components` directory.
+   - Restart Home Assistant.
 
 ## Configuration
 
